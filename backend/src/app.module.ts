@@ -5,6 +5,7 @@ import { SequelizeModule } from '@nestjs/sequelize';
 import { RestaurantsModule } from './restaurants/restaurants.module';
 import { ProductsModule } from './products/products.module';
 import { BuyersModule } from './buyers/buyers.module';
+import { OrdersModule } from './orders/orders.module';
 
 @Module({
   imports: [
@@ -26,7 +27,8 @@ import { BuyersModule } from './buyers/buyers.module';
     }),
     RestaurantsModule,
     ProductsModule,
-    BuyersModule
+    BuyersModule,
+    OrdersModule
   ],
   controllers: [AppController],
   providers: [AppService],

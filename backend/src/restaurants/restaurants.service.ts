@@ -6,15 +6,14 @@ import { InjectModel } from '@nestjs/sequelize';
 import * as bcrypt from 'bcrypt';
 import { Product } from 'src/products/entities/product.entity';
 import { Op } from 'sequelize';
-
-interface IRestaurante {
-  name: string
-}
+import { Order } from 'src/orders/entities/order.entity';
+import { Buyer } from 'src/buyers/entities/buyer.entity';
 
 @Injectable()
 export class RestaurantsService {
   constructor(
     @InjectModel(Restaurant) private restaurantRepo: typeof Restaurant, // Injeção do modelo
+    @InjectModel(Order) private ordersRepo: typeof Order, // Injeção do modelo
   ) { }
 
   async create(createRestaurantDto: CreateRestaurantDto) {
@@ -36,7 +35,7 @@ export class RestaurantsService {
 
     newRestaurant.password = undefined;
 
-    return 'Restaurante cadastrado com sucesso.';
+    return newRestaurant;
   }
 
   async findAll() {
@@ -53,6 +52,7 @@ export class RestaurantsService {
 
   async findAllDisabled() {
     const allProducts = await this.restaurantRepo.findAll({
+      attributes: { exclude: ['password'] },
       where: {
         canceledAt: { [Op.ne]: null },
       }
@@ -64,6 +64,7 @@ export class RestaurantsService {
   async findOne(phone: string) {
     const restaurant = await this.restaurantRepo.findOne({
       where: { phone },
+      include: [Product],
       attributes: { exclude: ['password'] }, // Exclui a senha no nível do banco
     });
 
@@ -72,6 +73,32 @@ export class RestaurantsService {
     }
 
     return restaurant;
+  }
+
+  async findProductsRestaurant(id: string) {
+    const existingProduct = await this.restaurantRepo.findOne({
+      where: { id },
+      include: [Product]
+    });
+
+    if (!existingProduct) {
+      throw new NotFoundException(`Restaurante com o id ${id} não encontrado.`);
+    }
+
+    return existingProduct.products;
+  }
+
+  async findOrdersRestaurant(id: string) {
+    const existingOrder = await this.restaurantRepo.findOne({
+      where: { id },
+      include: [Order]
+    });
+
+    if (!existingOrder) {
+      throw new NotFoundException(`Restaurante com o id ${id} não encontrado.`);
+    }
+
+    return existingOrder.orders;
   }
 
   async update(id: string) {

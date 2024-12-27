@@ -1,4 +1,5 @@
-import { Column, DataType, Default, Model, PrimaryKey, Table } from "sequelize-typescript";
+import { Column, DataType, Default, HasMany, Model, PrimaryKey, Table } from "sequelize-typescript";
+import { Order } from "src/orders/entities/order.entity";
 
 @Table
 export class Buyer extends Model {
@@ -12,4 +13,7 @@ export class Buyer extends Model {
 
     @Column({ type: DataType.STRING, allowNull: false })
     phone: string;
+
+    @HasMany(() => Order, { foreignKey: 'buyerId', as: 'orders' })
+    orders: Order[];
 }

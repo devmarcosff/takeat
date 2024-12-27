@@ -1,4 +1,5 @@
 import { Table, Column, Model, PrimaryKey, DataType, Default, HasMany } from "sequelize-typescript";
+import { Order } from "src/orders/entities/order.entity";
 import { Product } from "src/products/entities/product.entity";
 
 @Table
@@ -29,6 +30,9 @@ export class Restaurant extends Model {
     @Column({ type: DataType.DATE, defaultValue: null })
     canceledAt?: Date;
 
-    @HasMany(() => Product) // Relacionamento com produtos
+    @HasMany(() => Product)
     products: Product[];
+
+    @HasMany(() => Order)
+    orders: Order[];
 }

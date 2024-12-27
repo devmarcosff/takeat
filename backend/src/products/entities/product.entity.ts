@@ -19,9 +19,6 @@ export class Product extends Model {
 
     @Column({ type: DataType.DATE, defaultValue: null })
     canceledAt?: Date;
-    
-    // @Column({ type: DataType.STRING, defaultValue: null })
-    // restaurant_id: string;
 
     @ForeignKey(() => Restaurant) // Define a chave estrangeira
     @Column(DataType.UUID)

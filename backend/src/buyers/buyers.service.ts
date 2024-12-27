@@ -3,6 +3,7 @@ import { CreateBuyerDto } from './dto/create-buyer.dto';
 import { UpdateBuyerDto } from './dto/update-buyer.dto';
 import { InjectModel } from '@nestjs/sequelize';
 import { Buyer } from './entities/buyer.entity';
+import { Order } from 'src/orders/entities/order.entity';
 
 @Injectable()
 export class BuyersService {
@@ -26,7 +27,9 @@ export class BuyersService {
   }
 
   async findAll() {
-    const allProducts = await this.buyerRepo.findAll();
+    const allProducts = await this.buyerRepo.findAll({
+      include: [Order]
+    });
 
     return allProducts;
   }

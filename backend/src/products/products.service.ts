@@ -4,11 +4,13 @@ import { UpdateProductDto } from './dto/update-product.dto';
 import { InjectModel } from '@nestjs/sequelize';
 import { Product } from './entities/product.entity';
 import { Op } from 'sequelize';
+import { Restaurant } from 'src/restaurants/entities/restaurant.entity';
 
 @Injectable()
 export class ProductsService {
   constructor(
     @InjectModel(Product) private productRepo: typeof Product, // Injeção do modelo
+    @InjectModel(Restaurant) private restaurantRepo: typeof Restaurant, // Injeção do modelo
   ) { }
 
   async create(createProductDto: CreateProductDto) {
