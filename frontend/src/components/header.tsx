@@ -14,7 +14,7 @@ export default function Header() {
       <div className="flex items-center mx-3 gap-2 divide-x divide-takeat-gray-500">
         <span className="flex items-center gap-2 text-xs font-light px-2"><div className="bg-takeat-success-500 rounded-full h-3 w-3 animate-pulse"></div> Delivery</span>
         <span className="flex items-center gap-2 text-xs font-light px-2"><div className="bg-takeat-success-500 rounded-full h-3 w-3 animate-pulse"></div> Retirada</span>
-        <span className="flex items-center gap-2 text-xs font-light px-2"><div className="bg-takeat-error-500 rounded-full h-3 w-3 animate-pulse"></div> Aberto</span>
+        <span className="flex items-center gap-2 text-xs font-light px-2"><div className="bg-takeat-error-500 rounded-full h-3 w-3 animate-pulse"></div> Fechado</span>
       </div>
     </div>
   )
