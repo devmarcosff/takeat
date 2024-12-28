@@ -3,7 +3,7 @@ import { Poppins } from "next/font/google";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "Takeat App - Login",
+  title: "Takeat App",
   description: "Faça seus pedidos com o Takeat App",
 };
 
