@@ -54,11 +54,18 @@ export default function Home() {
 
             <div>
               <Link
-                href={'/app'}
+                href={'/foodies'}
                 className="flex w-full justify-center transition-all rounded-md bg-takeat-error-400 px-3 py-1.5 text-sm/6 font-semibold text-white shadow-sm hover:bg-takeat-error-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
               >
                 Entrar
               </Link>
+              {/* <button
+                type="submit"
+                onClick={}
+                className="flex w-full justify-center transition-all rounded-md bg-takeat-error-400 px-3 py-1.5 text-sm/6 font-semibold text-white shadow-sm hover:bg-takeat-error-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+              >
+                Entrar
+              </button> */}
             </div>
           </form>
 
