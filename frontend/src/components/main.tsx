@@ -1,24 +1,42 @@
 "use client"
 
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { EmblaOptionsType } from 'embla-carousel'
 import EmblaCarousel from './carousel/EmblaCarousel'
 import Restaurants from './restaurants/Restaurants'
-const OPTIONS: EmblaOptionsType = { align: 'start', loop: true }
-const SLIDE_COUNT = 3
-const SLIDES = Array.from(Array(SLIDE_COUNT).keys())
+import AdsCarousel from './carousel/AdsCarousel'
+import axios from 'axios'
+import { IRestaurants } from '@/types/Types'
+
+const SLIDE_COUNT = 10
+export const SLIDES = Array.from(Array(SLIDE_COUNT).keys())
 
 export default function MainApp() {
+
+  const [restaurants, setRestaurants] = useState<IRestaurants[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  const OPTIONS: EmblaOptionsType = { align: 'start', loop: restaurants.length > 1 ? true : false }
+
+  useEffect(() => {
+    const fetchRestaurants = async () => {
+      try {
+        const res = await axios.get<IRestaurants[]>('https://conecta.stevanini.com.br/restaurants');
+        setRestaurants(res.data);
+        setLoading(false);
+      } catch (error) {
+        console.log(`Erro ao buscar os restaurantes: ${error}`);
+      }
+    };
+
+    fetchRestaurants();
+  }, []);
+
   return (
     <div>
-      {/* Restaurantes */}
-      {/* <div className="m-2 flex items-center justify-between p-2 pr-5 bg-white rounded-md shadow-sm border border-takeat-gray-500">
-        <h2>Os melhores restaurantes</h2>
-        <IoIosArrowForward />
-      </div> */}
-      <EmblaCarousel slides={SLIDES} options={OPTIONS} />
+      <AdsCarousel loading={loading} restaurants={restaurants} options={OPTIONS} />
 
-      <Restaurants />
+      <Restaurants loading={loading} restaurants={restaurants} />
     </div>
   )
 }
