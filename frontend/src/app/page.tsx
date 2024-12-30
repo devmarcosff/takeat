@@ -9,7 +9,7 @@ export default function App() {
         <Header />
       </div>
       <MainApp />
-      <FooterCart />
+      {/* <FooterCart /> */}
     </div>
   )
 }
