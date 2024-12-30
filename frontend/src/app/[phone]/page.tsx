@@ -7,6 +7,7 @@ import React, { useEffect, useState } from "react";
 import { IoRestaurant } from "react-icons/io5";
 import { FiPlus } from "react-icons/fi";
 import { RiSubtractLine } from "react-icons/ri";
+import Image from "next/image";
 
 interface Props {
   params: Promise<{ phone: string }>;
@@ -84,7 +85,7 @@ export default function RestaurantePage({ params }: Props) {
           >
             <div className="flex flex-col p-4 hover:bg-takeat-gray-300 border rounded-md border-takeat-gray-500 shadow-sm w-full bg-takeat-white-50">
               <div className="flex items-center gap-3">
-                <img
+                <Image
                   src={`https://eu.ui-avatars.com/api/?name=${item.name}`}
                   className="h-10 rounded-md shadow-md"
                   alt={item.name}

@@ -7,6 +7,7 @@ import axios from 'axios';
 import { IRestaurants, PropType } from '@/types/Types'
 import Loading from '../loading/Loading'
 import { SLIDES } from '../main'
+import Image from 'next/image'
 
 const AdsCarousel: React.FC<PropType> = (props) => {
   const { options, loading, restaurants } = props
@@ -23,7 +24,7 @@ const AdsCarousel: React.FC<PropType> = (props) => {
               <div className="cursor-pointer select-none transform-gpu translate-x-0 translate-y-0 flex-shrink-0 flex-grow-0 w-[var(--slide-size)] md:w-1/6 min-w-0 pl-[var(--slide-spacing)]" key={index}>
                 <div className="flex flex-col p-4 border rounded-md border-takeat-gray-500 shadow-sm w-full bg-takeat-white-50">
                   <div className="flex items-center gap-3">
-                    <img src={item.url || `https://eu.ui-avatars.com/api/?name=${item.username}`} className="h-10 rounded-md shadow-md" alt={item.username} />
+                    <Image src={item.url || `https://eu.ui-avatars.com/api/?name=${item.username}`} className="h-10 rounded-md shadow-md" alt={item.username} />
                     <div className="flex items-start w-full justify-between">
                       <div>
                         <h2 className="font-medium">{item.username}</h2>

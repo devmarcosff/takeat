@@ -1,4 +1,5 @@
 "use client"
+import Image from "next/image";
 import { useState } from "react";
 import { TiLocation } from "react-icons/ti";
 
@@ -35,7 +36,7 @@ export default function Header() {
   return (
     <div className="flex flex-col gap-3 p-3 border rounded-md border-takeat-gray-500 shadow-sm w-full bg-takeat-white-50">
       <div className="flex items-center gap-3">
-        <img src="https://takeat-imgs.takeat.app/491e2dd42e4f7090d971fcf6d127079d.png" className="h-16" alt="Takeat App" />
+        <Image src="https://takeat-imgs.takeat.app/491e2dd42e4f7090d971fcf6d127079d.png" className="h-16" alt="Takeat App" />
         <div>
           <h2 className="font-medium">Takeat app</h2>
           <p className="text-sm flex items-center gap-1"><TiLocation /> Vila Kennedy, N° 60, Vitória - ES</p>

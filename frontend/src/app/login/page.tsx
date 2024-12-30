@@ -1,3 +1,4 @@
+import Image from "next/image";
 import Link from "next/link";
 
 export default function Home() {
@@ -5,7 +6,7 @@ export default function Home() {
     <>
       <div className="flex min-h-full flex-1 flex-col justify-center px-6 py-12 lg:px-8">
         <div className="sm:mx-auto sm:w-full sm:max-w-sm">
-          <img
+          <Image
             alt="Takeat App"
             src="https://takeat-imgs.takeat.app/491e2dd42e4f7090d971fcf6d127079d.png"
             className="mx-auto h-10 w-auto"

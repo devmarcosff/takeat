@@ -1,3 +1,4 @@
+import Image from "next/image";
 import Link from "next/link";
 import { BiLogoInstagramAlt } from "react-icons/bi";
 import { CiViewList } from "react-icons/ci";
@@ -18,7 +19,7 @@ export default function FooterCart() {
           <span>Siga-nos</span>
         </button>
         <button className="items-center justify-center flex flex-col text-sm gap-2">
-          <div className="bg-takeat-error-400 hover:bg-takeat-error-500 transition-all absolute -top-5 h-20 w-20 rounded-full flex items-center justify-center p-3"><img src="https://pedido.takeat.app/static/media/iconTake.64d65b59.svg" className="h-full" alt="Takeat App" /></div>
+          <div className="bg-takeat-error-400 hover:bg-takeat-error-500 transition-all absolute -top-5 h-20 w-20 rounded-full flex items-center justify-center p-3"><Image src="https://pedido.takeat.app/static/media/iconTake.64d65b59.svg" className="h-full" alt="Takeat App" /></div>
         </button>
         <button className="items-center justify-center flex flex-col text-sm gap-2">
           <FaMoneyBill className="size-5 text-takeat-error-400" />

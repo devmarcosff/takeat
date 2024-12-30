@@ -3,6 +3,7 @@ import { IoRestaurant } from "react-icons/io5";
 import Loading from "../loading/Loading";
 import { SLIDES } from "../main";
 import Link from "next/link";
+import Image from "next/image";
 
 export default function Restaurants({ restaurants, loading }: PropType) {
   return (
@@ -20,7 +21,7 @@ export default function Restaurants({ restaurants, loading }: PropType) {
             <Link href={`/${item.phone}`} className="cursor-pointer transform-gpu mt-2 translate-x-0 shadow-sm focus:shadow-none translate-y-0 flex-shrink-0 flex-grow-0 w-[var(--slide-size)] min-w-0 pl-[var(--slide-spacing)]" key={index}>
               <div className="flex flex-col p-4 hover:bg-takeat-gray-400 border rounded-md border-takeat-gray-500 shadow-sm w-full bg-takeat-white-50">
                 <div className="flex items-center gap-3">
-                  <img src={item.url || `https://eu.ui-avatars.com/api/?name=${item.username}`} className="h-10 rounded-md shadow-md" alt={item.username} />
+                  <Image src={item.url || `https://eu.ui-avatars.com/api/?name=${item.username}`} className="h-10 rounded-md shadow-md" alt={item.username} />
                   <div className="flex items-start w-full justify-between">
                     <div>
                       <h2 className="font-medium">{item.username}</h2>

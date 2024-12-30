@@ -1,5 +1,6 @@
 "use client"
 import { IRestaurants } from "@/types/Types";
+import Image from "next/image";
 import { useEffect, useState } from "react";
 import { TiLocation } from "react-icons/ti";
 
@@ -47,7 +48,7 @@ export default function HeaderRestaurant({ loading, restaurant }: HeaderProps) {
   return (
     <div className="flex flex-col gap-3 p-3 border rounded-md border-takeat-gray-500 shadow-sm w-full bg-takeat-white-50">
       <div className="flex items-center gap-3">
-        <img src="https://takeat-imgs.takeat.app/491e2dd42e4f7090d971fcf6d127079d.png" className="h-16" alt={`${restaurant.username}`} />
+        <Image src="https://takeat-imgs.takeat.app/491e2dd42e4f7090d971fcf6d127079d.png" className="h-16" alt={`${restaurant.username}`} />
         <div>
           <h2 className="font-medium">{restaurant.username}</h2>
           <p className="text-sm flex items-center gap-1"><TiLocation /> {restaurant.address}</p>
