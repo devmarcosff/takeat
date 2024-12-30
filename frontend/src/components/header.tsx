@@ -4,7 +4,7 @@ import { useState } from "react";
 import { TiLocation } from "react-icons/ti";
 
 export default function Header() {
-  const [loading, setLoading] = useState(false);
+  const [loading] = useState(false);
 
   if (loading) return (
     <div className="flex flex-col gap-3 p-3 border rounded-md border-takeat-gray-500 shadow-sm w-full bg-takeat-white-50 animate-pulse">

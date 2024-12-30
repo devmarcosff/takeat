@@ -29,7 +29,7 @@ type PropType = {
 
 const EmblaCarousel: React.FC<PropType> = (props) => {
   const { slides, options } = props
-  const [emblaRef, emblaApi] = useEmblaCarousel(options, [Autoplay()])
+  const [emblaRef] = useEmblaCarousel(options, [Autoplay()])
 
   return (
     <section className={`max-w-3xl mx-auto [--slide-spacing:.5rem] ${slides.length == 1 ? '[--slide-size:98%]' : '[--slide-size:85%]'} ml-2 my-2`}>

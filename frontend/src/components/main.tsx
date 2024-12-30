@@ -2,7 +2,6 @@
 
 import React, { useEffect, useState } from 'react'
 import { EmblaOptionsType } from 'embla-carousel'
-import EmblaCarousel from './carousel/EmblaCarousel'
 import Restaurants from './restaurants/Restaurants'
 import AdsCarousel from './carousel/AdsCarousel'
 import axios from 'axios'

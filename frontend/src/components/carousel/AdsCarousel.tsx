@@ -1,17 +1,15 @@
 "use client"
-import React, { useEffect, useState } from 'react'
-import { EmblaOptionsType } from 'embla-carousel'
+import React from 'react'
 import Autoplay from 'embla-carousel-autoplay'
 import useEmblaCarousel from 'embla-carousel-react'
-import axios from 'axios';
-import { IRestaurants, PropType } from '@/types/Types'
+import { PropType } from '@/types/Types'
 import Loading from '../loading/Loading'
 import { SLIDES } from '../main'
 import Image from 'next/image'
 
 const AdsCarousel: React.FC<PropType> = (props) => {
   const { options, loading, restaurants } = props
-  const [emblaRef, emblaApi] = useEmblaCarousel(options, [Autoplay()])
+  const [emblaRef] = useEmblaCarousel(options, [Autoplay()])
 
   return (
     <section className={`max-w-full [--slide-spacing:.5rem] [--slide-size:85%] ml-2 my-2`}>

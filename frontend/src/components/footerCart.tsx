@@ -1,10 +1,7 @@
 import Image from "next/image";
-import Link from "next/link";
 import { BiLogoInstagramAlt } from "react-icons/bi";
-import { CiViewList } from "react-icons/ci";
-import { FaClipboardList, FaInstagram, FaMoneyBill } from "react-icons/fa";
-import { LuCircleHelp } from "react-icons/lu";
-import { MdHelp, MdOutlineHelp } from "react-icons/md";
+import { FaClipboardList, FaMoneyBill } from "react-icons/fa";
+import { MdHelp } from "react-icons/md";
 
 export default function FooterCart() {
   return (
