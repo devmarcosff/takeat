@@ -4,8 +4,8 @@ import React, { useEffect, useState } from 'react'
 import { EmblaOptionsType } from 'embla-carousel'
 import axios from 'axios'
 import { IRestaurants } from '@/types/Types'
-import AdsCarousel from './carousel/adsCarousel'
 import Restaurants from './restaurants/restaurants'
+import AdsCarousel from './carousel/adsCarousel'
 
 const SLIDE_COUNT = 10
 export const SLIDES = Array.from(Array(SLIDE_COUNT).keys())
@@ -20,7 +20,7 @@ export default function MainApp() {
   useEffect(() => {
     const fetchRestaurants = async () => {
       try {
-        const res = await axios.get<IRestaurants[]>('https://conecta.stevanini.com.br/restaurants');
+        const res = await axios.get<IRestaurants[]>(`${process.env.NEXT_PUBLIC_API_URL}/restaurants`);
         setRestaurants(res.data);
         setLoading(false);
       } catch (error) {
@@ -32,9 +32,8 @@ export default function MainApp() {
   }, []);
 
   return (
-    <div>
+    <div className='pb-20'>
       <AdsCarousel loading={loading} restaurants={restaurants} options={OPTIONS} />
-
       <Restaurants loading={loading} restaurants={restaurants} />
     </div>
   )

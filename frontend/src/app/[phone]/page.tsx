@@ -2,14 +2,14 @@
 import HeaderRestaurant from "@/components/headers/header.restaurant.component";
 import Loading from "@/components/loading/loading.restaurants.component";
 import LoadingHeader from "@/components/loading/loading.header.component";
-import { IRestaurants } from "@/types/Types";
+import { IProducts, IRestaurants } from "@/types/Types";
 import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { IoRestaurant } from "react-icons/io5";
-import { FiPlus } from "react-icons/fi";
-import { RiSubtractLine } from "react-icons/ri";
 import Image from "next/image";
 import Logo from '../../../assets/logo_takeat.png'
+import Menu from "@/components/menu/menu.component";
+import ProductModal from "@/components/cart/product.modal";
 
 interface Props {
   params: Promise<{ phone: string }>;
@@ -18,9 +18,16 @@ interface Props {
 export default function RestaurantePage({ params }: Props) {
   const [restaurant, setRestaurant] = useState<IRestaurants | null>(null);
   const [loading, setLoading] = useState(true);
-
-  // Estado para controlar as quantidades individualmente
-  const [quantities, setQuantities] = useState<{ [key: string]: number }>({});
+  const [open, setOpen] = useState(false)
+  const [addCart, setAddCart] = useState<any>()
+  const [snack, setSnack] = useState<IProducts>({
+    id: '',
+    name: '',
+    description: '',
+    value: 0,
+    restaurant_id: '',
+    quantities: 0
+  })
 
   const phone = React.use(params)?.phone;
 
@@ -29,16 +36,8 @@ export default function RestaurantePage({ params }: Props) {
 
     const fetchRestaurant = async () => {
       try {
-        const res = await axios.get<IRestaurants>(`https://conecta.stevanini.com.br/restaurants/${phone}`);
+        const res = await axios.get<IRestaurants>(`${process.env.NEXT_PUBLIC_API_URL}/restaurants/${phone}`);
         setRestaurant(res.data);
-
-        // Inicializa as quantidades com 0 para cada produto
-        const initialQuantities = res.data.products.reduce((acc, product) => {
-          acc[product.id] = 0; // Supondo que cada produto tenha um ID único
-          return acc;
-        }, {} as { [key: string]: number });
-
-        setQuantities(initialQuantities);
         setLoading(false);
       } catch (error) {
         console.error(`Erro ao buscar o restaurante: ${error}`);
@@ -48,21 +47,7 @@ export default function RestaurantePage({ params }: Props) {
     fetchRestaurant();
   }, [phone]);
 
-  // Função para incrementar a quantidade de um produto
-  const increment = (productId: string) => {
-    setQuantities((prev) => ({
-      ...prev,
-      [productId]: prev[productId] + 1,
-    }));
-  };
-
-  // Função para decrementar a quantidade de um produto
-  const decrement = (productId: string) => {
-    setQuantities((prev) => ({
-      ...prev,
-      [productId]: prev[productId] > 0 ? prev[productId] - 1 : 0, // Evita valores negativos
-    }));
-  };
+  console.log(addCart)
 
   if (loading) return (
     <div className="p-2 flex flex-col gap-2">
@@ -75,8 +60,9 @@ export default function RestaurantePage({ params }: Props) {
 
   return (
     <>
-      <div className="p-2">
+      <div className="m-2">
         <HeaderRestaurant restaurant={restaurant} />
+        <Menu />
       </div>
 
       <section className="mx-2 p-3 bg-white rounded-md shadow-sm border border-takeat-gray-500">
@@ -87,45 +73,36 @@ export default function RestaurantePage({ params }: Props) {
 
         {restaurant.products?.map((item) => (
           <div
+            onClick={() => {
+              setOpen(true)
+              setSnack(item)
+            }}
             key={item.id}
             className="cursor-pointer transform-gpu mt-2 translate-x-0 shadow-sm focus:shadow-none translate-y-0 flex-shrink-0 flex-grow-0 w-[var(--slide-size)] min-w-0 pl-[var(--slide-spacing)]"
           >
             <div className="flex flex-col p-4 hover:bg-takeat-gray-300 border rounded-md border-takeat-gray-500 shadow-sm w-full bg-takeat-white-50">
-              <div className="flex items-center gap-3">
+              <div className="flex items-center gap-4">
+                <div className="flex items-center w-full justify-between gap-2">
+                  <div>
+                    <h2 className="font-normal text-sm">{item.name}</h2>
+                    <p className="text-xs line-clamp-2 text-takeat-gray-700 font-thin">{item.description}</p>
+                    <p className="text-xs line-clamp-2">R$ {item.value}</p>
+                  </div>
+                </div>
                 <Image
                   width={40}
                   height={40}
                   src={Logo}
-                  className="h-10 rounded-md shadow-md"
-                  alt={item.name}
+                  className="h-10"
+                  alt={'Takeat'}
                 />
-                <div className="flex items-center w-full justify-between gap-2">
-                  <div>
-                    <h2 className="font-medium">{item.name}</h2>
-                    <p className="text-sm line-clamp-2 hover:line-clamp-6">{item.description}</p>
-                  </div>
-                  <div className="flex items-center justify-center gap-2 border rounded-md shadow-sm w-28">
-                    <button
-                      onClick={() => decrement(item.id)} // Passa o ID do produto
-                      disabled={quantities[item.id] === 0}
-                      className={`p-2 rounded-md ${quantities[item.id] === 0 ? 'text-takeat-gray-600' : 'text-takeat-error-500'}`}
-                    >
-                      <RiSubtractLine />
-                    </button>
-                    <span className="text-sm font-medium">{quantities[item.id]}</span> {/* Mostra a quantidade do produto */}
-                    <button
-                      onClick={() => increment(item.id)} // Passa o ID do produto
-                      className={`p-2 rounded-md text-takeat-error-500`}
-                    >
-                      <FiPlus />
-                    </button>
-                  </div>
-                </div>
               </div>
             </div>
           </div>
         ))}
       </section>
+
+      <ProductModal open={open} setOpen={setOpen} snack={snack} setAddCart={setAddCart} />
     </>
   );
 }

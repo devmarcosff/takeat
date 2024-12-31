@@ -8,7 +8,6 @@ import { FaMapLocation } from "react-icons/fa6";
 import LoadingHeader from "../loading/loading.header.component";
 
 export default function Header() {
-  // const [loading] = useState(false);
   const [location, setLocation] = useState<{
     latitude: number | null;
     longitude: number | null;

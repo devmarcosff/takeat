@@ -1,12 +1,12 @@
 import { EmblaOptionsType } from "embla-carousel";
 
-interface IProducts {
+export interface IProducts {
   id: string,
   name: string,
   description: string,
   value: number,
-  canceledAt: boolean,
-  restaurant_id: string
+  restaurant_id: string,
+  quantities: number
 }
 
 export interface IRestaurants {
