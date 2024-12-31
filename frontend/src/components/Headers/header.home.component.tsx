@@ -5,7 +5,7 @@ import { TiLocation } from "react-icons/ti";
 import Logo from '../../../assets/logo_takeat.png'
 import { FaStreetView } from "react-icons/fa";
 import { FaMapLocation } from "react-icons/fa6";
-import LoadingHeader from "../Loading/loading.header.component";
+import LoadingHeader from "../loading/loading.header.component";
 
 export default function Header() {
   // const [loading] = useState(false);

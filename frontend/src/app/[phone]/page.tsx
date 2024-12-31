@@ -1,6 +1,6 @@
 "use client"
-import HeaderRestaurant from "@/components/Headers/header.restaurant.component";
-import Loading from "@/components/Loading/loading.restaurants.component";
+import HeaderRestaurant from "@/components/headers/header.restaurant.component";
+import Loading from "@/components/loading/loading.restaurants.component";
 import { IRestaurants } from "@/types/Types";
 import axios from "axios";
 import React, { useEffect, useState } from "react";
@@ -9,7 +9,7 @@ import { FiPlus } from "react-icons/fi";
 import { RiSubtractLine } from "react-icons/ri";
 import Image from "next/image";
 import Logo from '../../../assets/logo_takeat.png'
-import LoadingHeader from "@/components/Loading/loading.header.component";
+import LoadingHeader from "@/components/loading/loading.header.component";
 
 interface Props {
   params: Promise<{ phone: string }>;

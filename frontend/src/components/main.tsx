@@ -2,10 +2,10 @@
 
 import React, { useEffect, useState } from 'react'
 import { EmblaOptionsType } from 'embla-carousel'
-import Restaurants from './Restaurants/Restaurants'
-import AdsCarousel from './Carousel/AdsCarousel'
 import axios from 'axios'
 import { IRestaurants } from '@/types/Types'
+import AdsCarousel from './carousel/adsCarousel'
+import Restaurants from './restaurants/restaurants'
 
 const SLIDE_COUNT = 10
 export const SLIDES = Array.from(Array(SLIDE_COUNT).keys())

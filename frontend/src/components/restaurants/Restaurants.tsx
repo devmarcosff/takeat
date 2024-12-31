@@ -1,10 +1,10 @@
 import { PropType } from "@/types/Types";
 import { IoRestaurant } from "react-icons/io5";
-import Loading from "../Loading/loading.restaurants.component";
 import { SLIDES } from "../main";
 import Link from "next/link";
 import Image from "next/image";
 import Logo from '../../../assets/logo_takeat.png'
+import Loading from "../loading/loading.restaurants.component";
 
 export default function Restaurants({ restaurants, loading }: PropType) {
   return (
