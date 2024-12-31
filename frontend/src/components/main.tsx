@@ -20,7 +20,7 @@ export default function MainApp() {
   useEffect(() => {
     const fetchRestaurants = async () => {
       try {
-        const res = await axios.get<IRestaurants[]>('http://localhost:8000/restaurants');
+        const res = await axios.get<IRestaurants[]>('https://conecta.stevanini.com.br/restaurants');
         setRestaurants(res.data);
         setLoading(false);
       } catch (error) {

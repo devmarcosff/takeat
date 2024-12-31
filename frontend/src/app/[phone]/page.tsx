@@ -1,6 +1,7 @@
 "use client"
 import HeaderRestaurant from "@/components/headers/header.restaurant.component";
 import Loading from "@/components/loading/loading.restaurants.component";
+import LoadingHeader from "@/components/loading/loading.header.component";
 import { IRestaurants } from "@/types/Types";
 import axios from "axios";
 import React, { useEffect, useState } from "react";
@@ -9,7 +10,6 @@ import { FiPlus } from "react-icons/fi";
 import { RiSubtractLine } from "react-icons/ri";
 import Image from "next/image";
 import Logo from '../../../assets/logo_takeat.png'
-import LoadingHeader from "@/components/loading/loading.header.component";
 
 interface Props {
   params: Promise<{ phone: string }>;
@@ -29,7 +29,7 @@ export default function RestaurantePage({ params }: Props) {
 
     const fetchRestaurant = async () => {
       try {
-        const res = await axios.get<IRestaurants>(`http://localhost:8000/restaurants/${phone}`);
+        const res = await axios.get<IRestaurants>(`https://conecta.stevanini.com.br/restaurants/${phone}`);
         setRestaurant(res.data);
 
         // Inicializa as quantidades com 0 para cada produto
