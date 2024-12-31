@@ -1,6 +1,4 @@
-type LoadingProps = {
-  dimension?: boolean;
-};
+import { LoadingProps } from "@/types/Types";
 
 export default function Loading({dimension}: LoadingProps) {
 

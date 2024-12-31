@@ -1,5 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
+import Logo from '../../../assets/logo_takeat.png'
 
 export default function Home() {
   return (
@@ -8,7 +9,9 @@ export default function Home() {
         <div className="sm:mx-auto sm:w-full sm:max-w-sm">
           <Image
             alt="Takeat App"
-            src="https://takeat-imgs.takeat.app/491e2dd42e4f7090d971fcf6d127079d.png"
+            width={40}
+            height={40}
+            src={Logo}
             className="mx-auto h-10 w-auto"
           />
           <h2 className="mt-10 text-center text-2xl/9 font-bold tracking-tight text-takeat-black-500">

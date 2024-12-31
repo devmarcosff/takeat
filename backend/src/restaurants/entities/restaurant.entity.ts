@@ -21,6 +21,9 @@ export class Restaurant extends Model {
     @Column({ type: DataType.STRING, unique: true })
     phone?: string;
 
+    @Column({ type: DataType.BOOLEAN, defaultValue: false })
+    status?: boolean;
+
     @Column({ type: DataType.STRING, })
     address?: string;
 

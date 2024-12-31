@@ -2,8 +2,8 @@
 
 import React, { useEffect, useState } from 'react'
 import { EmblaOptionsType } from 'embla-carousel'
-import Restaurants from './restaurants/Restaurants'
-import AdsCarousel from './carousel/AdsCarousel'
+import Restaurants from './Restaurants/Restaurants'
+import AdsCarousel from './Carousel/AdsCarousel'
 import axios from 'axios'
 import { IRestaurants } from '@/types/Types'
 
@@ -20,7 +20,7 @@ export default function MainApp() {
   useEffect(() => {
     const fetchRestaurants = async () => {
       try {
-        const res = await axios.get<IRestaurants[]>('https://conecta.stevanini.com.br/restaurants');
+        const res = await axios.get<IRestaurants[]>('http://localhost:8000/restaurants');
         setRestaurants(res.data);
         setLoading(false);
       } catch (error) {

@@ -41,7 +41,7 @@ const EmblaCarousel: React.FC<PropType> = (props) => {
                 <div className="transform-gpu translate-x-0 translate-y-0 flex-shrink-0 flex-grow-0 w-[var(--slide-size)] min-w-0 pl-[var(--slide-spacing)]" key={index}>
                   <div className="flex flex-col p-4 border rounded-md border-takeat-gray-500 shadow-sm w-full bg-takeat-white-50">
                     <div className="flex items-center gap-3">
-                      <Image src={item.url} className="h-10" alt={item.username} />
+                      <Image src={item.url} height={40} width={40} className="h-10" alt={item.username} />
                       <div className="flex items-start w-full justify-between">
                         <div>
                           <h2 className="font-medium">{item.username}</h2>

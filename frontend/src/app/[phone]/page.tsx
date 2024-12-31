@@ -1,6 +1,6 @@
 "use client"
-import HeaderRestaurant from "@/components/Headers/header.restaurant";
-import Loading from "@/components/loading/Loading";
+import HeaderRestaurant from "@/components/Headers/header.restaurant.component";
+import Loading from "@/components/Loading/loading.restaurants.component";
 import { IRestaurants } from "@/types/Types";
 import axios from "axios";
 import React, { useEffect, useState } from "react";
@@ -8,6 +8,8 @@ import { IoRestaurant } from "react-icons/io5";
 import { FiPlus } from "react-icons/fi";
 import { RiSubtractLine } from "react-icons/ri";
 import Image from "next/image";
+import Logo from '../../../assets/logo_takeat.png'
+import LoadingHeader from "@/components/Loading/loading.header.component";
 
 interface Props {
   params: Promise<{ phone: string }>;
@@ -27,7 +29,7 @@ export default function RestaurantePage({ params }: Props) {
 
     const fetchRestaurant = async () => {
       try {
-        const res = await axios.get<IRestaurants>(`https://conecta.stevanini.com.br/restaurants/${phone}`);
+        const res = await axios.get<IRestaurants>(`http://localhost:8000/restaurants/${phone}`);
         setRestaurant(res.data);
 
         // Inicializa as quantidades com 0 para cada produto
@@ -62,17 +64,22 @@ export default function RestaurantePage({ params }: Props) {
     }));
   };
 
-  if (loading) return <Loading dimension />;
+  if (loading) return (
+    <div className="p-2 flex flex-col gap-2">
+      <LoadingHeader />
+      <Loading dimension />
+    </div>
+  );
 
   if (!restaurant) return <p className="p-2">Restaurante não identificado.</p>;
 
   return (
     <>
       <div className="p-2">
-        <HeaderRestaurant loading={loading} restaurant={restaurant} />
+        <HeaderRestaurant restaurant={restaurant} />
       </div>
 
-      <section className="m-2 p-3 bg-white rounded-md shadow-sm border border-takeat-gray-500">
+      <section className="mx-2 p-3 bg-white rounded-md shadow-sm border border-takeat-gray-500">
         <div className="flex items-center justify-between">
           <h2 className="font-medium">Refeições</h2>
           <IoRestaurant className="size-5 text-takeat-error-400" />
@@ -86,7 +93,9 @@ export default function RestaurantePage({ params }: Props) {
             <div className="flex flex-col p-4 hover:bg-takeat-gray-300 border rounded-md border-takeat-gray-500 shadow-sm w-full bg-takeat-white-50">
               <div className="flex items-center gap-3">
                 <Image
-                  src={`https://eu.ui-avatars.com/api/?name=${item.name}`}
+                  width={40}
+                  height={40}
+                  src={Logo}
                   className="h-10 rounded-md shadow-md"
                   alt={item.name}
                 />
