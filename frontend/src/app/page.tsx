@@ -6,9 +6,9 @@ import Menu from "@/components/menu/menu.component";
 export default function App() {
   return (
     <div className="m-2">
-      <Menu />
       <Header />
       <MainApp />
+      <Menu />
       {/* <FooterCart /> */}
     </div>
   )

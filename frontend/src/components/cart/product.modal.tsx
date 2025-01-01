@@ -1,5 +1,5 @@
 "use client"
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { FiPlus } from "react-icons/fi";
 import { RiSubtractLine } from "react-icons/ri";
 import { Dialog, DialogBackdrop, DialogPanel, DialogTitle } from '@headlessui/react'
@@ -8,17 +8,63 @@ import { IProducts } from "@/types/Types";
 interface ModalProps {
   open: boolean,
   setOpen: any,
-  snack: IProducts,
-  setAddCart: any
+  snack: IProducts
 }
 
-export default function ProductModal({ open, setOpen, snack, setAddCart }: ModalProps) {
+export const formatToBRL = (value: number): string => {
+  return new Intl.NumberFormat("pt-BR", {
+    style: "currency",
+    currency: "BRL",
+    minimumFractionDigits: 2,
+  }).format(value);
+};
+
+export const calculateTotal = (quantities: number, value: number): number => {
+  const total = quantities * value;
+  return parseFloat(total.toFixed(2)); // Garante duas casas decimais
+};
+
+export default function ProductModal({ open, setOpen, snack }: ModalProps) {
   const img = 'https://takeat-imgs.takeat.app/e29317dec0a27d9c890ce52053160d7a.webp'
   const [quantities, setQuantities] = useState<number>(0);
-  
   const increment = () => setQuantities(quantities + 1)
-
   const decrement = () => setQuantities(quantities > 0 ? quantities - 1 : 0)
+
+  useEffect(() => {
+    setQuantities(0)
+  }, [open == false])
+
+  const getProductsFromLocalStorage = (): IProducts[] => {
+    if (typeof window === "undefined") return [];
+    const storedData = localStorage.getItem('products');
+    return storedData ? JSON.parse(storedData) : [];
+  };
+
+  const addProductToLocalStorage = (product: IProducts): void => {
+    if (typeof window === "undefined") return;
+  
+    const existingProducts = JSON.parse(localStorage.getItem("products") || "[]");
+  
+    const productIndex = existingProducts.findIndex(
+      (existingProduct: IProducts) => existingProduct.id === product.id
+    );
+  
+    if (productIndex > -1) {
+      existingProducts[productIndex].quantities += product.quantities;
+    } else {
+      existingProducts.push(product);
+    }
+  
+    localStorage.setItem("products", JSON.stringify(existingProducts));
+  
+    window.dispatchEvent(new Event("productsUpdated"));
+  };
+  
+
+  // const clearProductsFromLocalStorage = (): void => {
+  //   if (typeof window === "undefined") return;
+  //   localStorage.removeItem('products');
+  // };
 
   return (
     <Dialog open={open} onClose={setOpen} className="relative z-50">
@@ -68,21 +114,21 @@ export default function ProductModal({ open, setOpen, snack, setAddCart }: Modal
             <hr />
             <div className="px-4 py-3 gap-3 w-full flex items-center justify-between">
               <button onClick={() => {
-                setAddCart({
+                setOpen(false)
+                setQuantities(0)
+                addProductToLocalStorage({
                   id: snack.id,
                   name: snack.name,
                   description: snack.description,
-                  value: quantities * snack?.value,
+                  value: calculateTotal(quantities, snack?.value),
                   restaurant_id: snack.restaurant_id,
                   quantities: quantities
                 })
-                setOpen(false)
-                setQuantities(0)
               }}
                 disabled={quantities === 0}
                 className={`disabled:bg-takeat-error-400 flex items-center justify-between w-full bg-takeat-error-500 text-white px-4 py-2 rounded-md shadow-md`}>
                 <span>Adicionar</span>
-                <span>R$ {quantities * snack?.value}</span>
+                <span>{formatToBRL(quantities * snack?.value)}</span>
               </button>
               <div className="flex items-center justify-center gap-2 border border-takeat-gray-500 rounded-sm shadow-sm w-28  px-4 py-2">
                 <button

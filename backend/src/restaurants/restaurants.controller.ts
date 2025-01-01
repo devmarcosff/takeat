@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, Query } from '@nestjs/common';
 import { RestaurantsService } from './restaurants.service';
 import { CreateRestaurantDto } from './dto/create-restaurant.dto';
 import { UpdateRestaurantDto } from './dto/update-restaurant.dto';
@@ -22,9 +22,18 @@ export class RestaurantsController {
     return this.restaurantsService.findAllDisabled();
   }
 
-  @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.restaurantsService.findOne(id);
+  @Get(':idOrPhone')
+  async findOne(
+    @Param('idOrPhone') idOrPhone: string,
+    @Query('type') type?: 'id' | 'phone',
+  ) {
+    const isPhone = type === 'phone' || /^[0-9]+$/.test(idOrPhone);
+
+    if (isPhone) {
+      return this.restaurantsService.findOne(idOrPhone, undefined);
+    } else {
+      return this.restaurantsService.findOne(undefined, idOrPhone);
+    }
   }
 
   @Get('/products/:id')

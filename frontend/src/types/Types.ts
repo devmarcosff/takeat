@@ -4,7 +4,7 @@ export interface IProducts {
   id: string,
   name: string,
   description: string,
-  value: number,
+  value: number | any,
   restaurant_id: string,
   quantities: number
 }

@@ -1,14 +1,26 @@
-import { IsNotEmpty, IsNumber, IsNumberString, IsString, IsUUID } from "class-validator";
+import { IsArray, IsNotEmpty, IsNumber, IsUUID, ValidateNested } from "class-validator";
+import { Type } from "class-transformer";
+
+export class ProductOrderDto {
+  @IsUUID()
+  @IsNotEmpty()
+  id: string;
+
+  @IsNumber()
+  @IsNotEmpty()
+  amount: number;
+}
 
 export class CreateOrderDto {
-    @IsNumberString()
-    @IsNotEmpty()
-    buyerPhone: string;
+  @IsNotEmpty()
+  buyerPhone: string;
 
-    @IsUUID()
-    @IsNotEmpty()
-    product_id: string;
+  @ValidateNested({ each: true })
+  @Type(() => ProductOrderDto)
+  @IsArray()
+  products: ProductOrderDto[];
 
-    @IsNumber()
-    amount: number;
+  @IsUUID()
+  @IsNotEmpty()
+  restaurantId: string;
 }

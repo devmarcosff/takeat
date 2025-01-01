@@ -17,31 +17,70 @@ export class OrdersService {
   ) { }
 
   async createOrder(createOrderDto: CreateOrderDto): Promise<Order> {
-    const { amount, buyerPhone, product_id } = createOrderDto;
+    const { buyerPhone, products } = createOrderDto;
 
-    const product = await this.productRepo.findByPk(product_id, {
-      include: [{ model: Restaurant }],
-    });
-    if (!product) {
-      throw new NotFoundException('Não encontramos este produto');
-    }
-
+    // Verificar ou criar o comprador
     let buyer = await this.buyerRepo.findOne({ where: { phone: buyerPhone } });
     if (!buyer) {
       buyer = await this.buyerRepo.create({ phone: buyerPhone });
     }
 
-    const totalPrice = amount * product.value;
-    const totalServicePrice = product.restaurant.has_service_tax ? totalPrice + totalPrice * 0.1 : totalPrice;
+    let totalPrice = 0;
+    let totalServicePrice = 0;
+
+    // Calcular o total de produtos comprados
+    const totalAmount = products.reduce((sum, product) => sum + product.amount, 0);
+
+    // Obter o restaurantId do primeiro produto
+    let restaurantId: string | null = null;
 
     const order = await this.orderRepo.create({
-      amount,
-      restaurantId: product.restaurant.id,
       buyerId: buyer.id,
-      total_service_price: totalServicePrice,
-      total_price: totalPrice,
-      productId: product.id,
       createdAt: new Date(),
+    });
+
+    for (const { id: productId, amount } of products) {
+      const product = await this.productRepo.findByPk(productId, {
+        include: [{ model: Restaurant }],
+      });
+
+      if (!product) {
+        throw new NotFoundException(`Produto com ID ${productId} não encontrado.`);
+      }
+
+      // Determinar o restaurantId
+      if (!restaurantId) {
+        restaurantId = product.restaurant.id;
+      } else if (restaurantId !== product.restaurant.id) {
+        throw new Error(
+          'Todos os produtos de um pedido devem pertencer ao mesmo restaurante.'
+        );
+      }
+
+      // Calcular preços
+      const productPrice = amount * product.value;
+      totalPrice += productPrice;
+
+      if (product.restaurant.has_service_tax) {
+        totalServicePrice += productPrice + productPrice * 0.1;
+      } else {
+        totalServicePrice += productPrice;
+      }
+
+      // Criar a entrada na tabela intermediária
+      await this.productRepo.create({
+        orderId: order.id,
+        productId: product.id,
+        amount,
+      });
+    }
+
+    // Atualizar o pedido com os totais, restaurantId e quantidade total
+    await order.update({
+      total_price: totalPrice,
+      total_service_price: totalServicePrice,
+      restaurantId,
+      amount: totalAmount
     });
 
     return order;

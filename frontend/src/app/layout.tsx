@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
 import { Poppins } from "next/font/google";
 import "./globals.css";
+import Menu from "@/components/menu/menu.component";
+import { ToastContainer } from "react-toastify";
 
 export const metadata: Metadata = {
   title: "Takeat App",
@@ -23,6 +25,8 @@ export default function RootLayout({
         className={`${poppins.className} h-full`}
       >
         {children}
+        <Menu />
+        <ToastContainer />
       </body>
     </html>
   );

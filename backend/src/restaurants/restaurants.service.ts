@@ -1,5 +1,5 @@
 import { Restaurant } from './entities/restaurant.entity';
-import { ConflictException, Inject, Injectable, NotFoundException } from '@nestjs/common';
+import { BadRequestException, ConflictException, Inject, Injectable, NotFoundException } from '@nestjs/common';
 import { CreateRestaurantDto } from './dto/create-restaurant.dto';
 import { UpdateRestaurantDto } from './dto/update-restaurant.dto';
 import { InjectModel } from '@nestjs/sequelize';
@@ -61,15 +61,25 @@ export class RestaurantsService {
     return allProducts;
   }
 
-  async findOne(phone: string) {
+  async findOne(phone?: string, id?: string) {
+    if (!phone && !id) {
+      throw new BadRequestException('Você deve fornecer o telefone ou o ID do restaurante.');
+    }
+
+    const where: any = {};
+    if (phone) where.phone = phone;
+    if (id) where.id = id;
+
     const restaurant = await this.restaurantRepo.findOne({
-      where: { phone },
+      where,
       include: [Product],
-      attributes: { exclude: ['password'] }, // Exclui a senha no nível do banco
+      attributes: { exclude: ['password'] },
     });
 
     if (!restaurant) {
-      throw new NotFoundException(`Restaurante com o telefone ${phone} não encontrado.`);
+      throw new NotFoundException(
+        `Restaurante ${phone ? `com o telefone ${phone}` : `com o ID ${id}`} não encontrado.`
+      );
     }
 
     return restaurant;

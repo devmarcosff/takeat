@@ -19,7 +19,6 @@ export default function RestaurantePage({ params }: Props) {
   const [restaurant, setRestaurant] = useState<IRestaurants | null>(null);
   const [loading, setLoading] = useState(true);
   const [open, setOpen] = useState(false)
-  const [addCart, setAddCart] = useState<any>()
   const [snack, setSnack] = useState<IProducts>({
     id: '',
     name: '',
@@ -47,8 +46,6 @@ export default function RestaurantePage({ params }: Props) {
     fetchRestaurant();
   }, [phone]);
 
-  console.log(addCart)
-
   if (loading) return (
     <div className="p-2 flex flex-col gap-2">
       <LoadingHeader />
@@ -62,7 +59,6 @@ export default function RestaurantePage({ params }: Props) {
     <>
       <div className="m-2">
         <HeaderRestaurant restaurant={restaurant} />
-        <Menu />
       </div>
 
       <section className="mx-2 p-3 bg-white rounded-md shadow-sm border border-takeat-gray-500">
@@ -102,7 +98,7 @@ export default function RestaurantePage({ params }: Props) {
         ))}
       </section>
 
-      <ProductModal open={open} setOpen={setOpen} snack={snack} setAddCart={setAddCart} />
+      <ProductModal open={open} setOpen={setOpen} snack={snack} />
     </>
   );
 }
