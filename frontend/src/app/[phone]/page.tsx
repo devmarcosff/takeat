@@ -8,8 +8,7 @@ import React, { useEffect, useState } from "react";
 import { IoRestaurant } from "react-icons/io5";
 import Image from "next/image";
 import Logo from '../../../assets/logo_takeat.png'
-import Menu from "@/components/menu/menu.component";
-import ProductModal from "@/components/cart/product.modal";
+import ProductModal from "@/components/modal/product.modal";
 
 interface Props {
   params: Promise<{ phone: string }>;

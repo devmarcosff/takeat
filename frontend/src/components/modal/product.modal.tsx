@@ -21,24 +21,18 @@ export const formatToBRL = (value: number): string => {
 
 export const calculateTotal = (quantities: number, value: number): number => {
   const total = quantities * value;
-  return parseFloat(total.toFixed(2)); // Garante duas casas decimais
+  return parseFloat(total.toFixed(2));
 };
 
 export default function ProductModal({ open, setOpen, snack }: ModalProps) {
   const img = 'https://takeat-imgs.takeat.app/e29317dec0a27d9c890ce52053160d7a.webp'
   const [quantities, setQuantities] = useState<number>(0);
-  const increment = () => setQuantities(quantities + 1)
-  const decrement = () => setQuantities(quantities > 0 ? quantities - 1 : 0)
+  const increment = () => setQuantities(quantities + 1);
+  const decrement = () => setQuantities(quantities > 0 ? quantities - 1 : 0);
 
   useEffect(() => {
-    setQuantities(0)
+    setQuantities(0);
   }, [open == false])
-
-  const getProductsFromLocalStorage = (): IProducts[] => {
-    if (typeof window === "undefined") return [];
-    const storedData = localStorage.getItem('products');
-    return storedData ? JSON.parse(storedData) : [];
-  };
 
   const addProductToLocalStorage = (product: IProducts): void => {
     if (typeof window === "undefined") return;
@@ -59,12 +53,6 @@ export default function ProductModal({ open, setOpen, snack }: ModalProps) {
   
     window.dispatchEvent(new Event("productsUpdated"));
   };
-  
-
-  // const clearProductsFromLocalStorage = (): void => {
-  //   if (typeof window === "undefined") return;
-  //   localStorage.removeItem('products');
-  // };
 
   return (
     <Dialog open={open} onClose={setOpen} className="relative z-50">
@@ -120,7 +108,7 @@ export default function ProductModal({ open, setOpen, snack }: ModalProps) {
                   id: snack.id,
                   name: snack.name,
                   description: snack.description,
-                  value: calculateTotal(quantities, snack?.value),
+                  value: snack?.value,
                   restaurant_id: snack.restaurant_id,
                   quantities: quantities
                 })

@@ -8,6 +8,8 @@ import { RiSubtractLine } from "react-icons/ri";
 import { FiPlus } from "react-icons/fi";
 import { FaTrashAlt } from "react-icons/fa";
 import { toast } from 'react-toastify';
+import { useRouter } from 'next/navigation';
+import { AiOutlineLoading3Quarters } from "react-icons/ai";
 
 const Cart = () => {
   const [products, setProducts] = useState<IProducts[]>([]);
@@ -16,6 +18,8 @@ const Cart = () => {
   const [subtotal, setSubtotal] = useState<number>(0);
   const [total, setTotal] = useState<number>(0);
   const [isLoading, setIsLoading] = useState<boolean>(true);
+  const [isLoadingButton, setIsLoadingButton] = useState<boolean>(false);
+  const router = useRouter();
 
   useEffect(() => {
     const storedProducts = JSON.parse(localStorage.getItem("products") || "[]");
@@ -38,7 +42,7 @@ const Cart = () => {
 
   const fetchRestaurant = async (restaurantId: string) => {
     try {
-      const response = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/restaurants/${restaurantId}`);
+      const response = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/restaurants/${restaurantId}?type=id`);
       setRestaurant(response.data);
       setIsLoading(false)
     } catch (error) {
@@ -65,10 +69,14 @@ const Cart = () => {
   const updateLocalStorage = (updatedProducts: IProducts[]) => {
     localStorage.setItem("products", JSON.stringify(updatedProducts));
     setProducts(updatedProducts);
+    const storageEvent = new Event("storage");
+    window.dispatchEvent(storageEvent);
   };
 
   const handleFinalizeOrder = async () => {
+    setIsLoadingButton(true)
     if (!phoneNumber) {
+      setTimeout(() => { setIsLoadingButton(false) }, 500)
       toast.error('Por favor, insira o número de telefone.', {
         position: "top-right",
         autoClose: 5000,
@@ -83,6 +91,7 @@ const Cart = () => {
     }
 
     if (!restaurant) {
+      setTimeout(() => { setIsLoadingButton(false) }, 500)
       toast.error('Erro ao identificar o restaurante.', {
         position: "top-right",
         autoClose: 5000,
@@ -106,7 +115,6 @@ const Cart = () => {
 
     try {
       await axios.post(`${process.env.NEXT_PUBLIC_API_URL}/orders`, payload);
-
       toast.success('Pedido finalizado com sucesso!', {
         position: "top-right",
         autoClose: 5000,
@@ -121,9 +129,14 @@ const Cart = () => {
       localStorage.removeItem("products");
       setProducts([]);
       setPhoneNumber("");
+      setIsLoadingButton(true)
+      
+      const storageEvent = new Event("storage");
+      window.dispatchEvent(storageEvent);
+      router.push("/");
     } catch (error) {
-      console.error("Erro ao finalizar o pedido:", error);
-      toast.error('Erro ao finalizar o pedido. Tente novamente mais tarde.', {
+      setIsLoadingButton(false)
+      toast.error(`Erro ao finalizar o pedido. Tente novamente mais tarde. ${error}`, {
         position: "top-right",
         autoClose: 5000,
         hideProgressBar: false,
@@ -284,9 +297,10 @@ const Cart = () => {
             />
             <button
               onClick={handleFinalizeOrder}
-              className="w-full bg-takeat-error-400 text-white p-2 rounded font-bold"
+              disabled={isLoadingButton}
+              className="w-full bg-takeat-error-400 text-center flex items-center justify-center text-white p-2 rounded font-medium shadow-md"
             >
-              Finalizar Pedido
+              {isLoadingButton ? <AiOutlineLoading3Quarters className="animate-spin" /> : 'Finalizar Pedido'}
             </button>
           </div>
         </>

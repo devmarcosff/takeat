@@ -9,6 +9,7 @@ import { Order } from 'src/orders/entities/order.entity';
 @Module({
   imports: [SequelizeModule.forFeature([Restaurant, Product, Order])],
   controllers: [RestaurantsController],
-  providers: [RestaurantsService]
+  providers: [RestaurantsService],
+  exports: [RestaurantsService]
 })
 export class RestaurantsModule { }

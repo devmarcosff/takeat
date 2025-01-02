@@ -12,7 +12,7 @@ async function bootstrap() {
 
   try {
     await app.listen(process.env.PORT || 8000);
-    console.log('Aplicação conectada com sucesso ao banco de dados.');
+    console.log('Aplicação conectada com sucesso.');
   } catch (error) {
     console.error('Erro ao conectar ao banco de dados:', error);
   }

@@ -8,10 +8,10 @@ export class CreateRestaurantDto {
         password: string;
     
         @IsString()
-        email: string;
+        email?: string;
     
         @IsString()
-        phone: string;
+        phone?: string;
     
         @IsString()
         address?: string;

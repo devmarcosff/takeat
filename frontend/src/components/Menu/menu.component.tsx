@@ -39,7 +39,7 @@ export default function Menu() {
           <span className="text-xs text-takeat-gray-700 group-hover:text-takeat-error-50">Início</span>
         </Link>
         <Link
-          href={"/perfil"}
+          href={"/login"}
           type="button"
           className="inline-flex flex-col items-center justify-center px-5 hover:bg-takeat-error-400 group"
         >

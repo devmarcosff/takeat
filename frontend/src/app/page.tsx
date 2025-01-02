@@ -1,4 +1,3 @@
-import FooterCart from "@/components/footerCart";
 import Header from "@/components/headers/header.home.component";
 import MainApp from "@/components/main";
 import Menu from "@/components/menu/menu.component";
@@ -9,7 +8,6 @@ export default function App() {
       <Header />
       <MainApp />
       <Menu />
-      {/* <FooterCart /> */}
     </div>
   )
 }

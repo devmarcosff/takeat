@@ -1,19 +1,17 @@
 import { Restaurant } from './entities/restaurant.entity';
 import { BadRequestException, ConflictException, Inject, Injectable, NotFoundException } from '@nestjs/common';
 import { CreateRestaurantDto } from './dto/create-restaurant.dto';
-import { UpdateRestaurantDto } from './dto/update-restaurant.dto';
 import { InjectModel } from '@nestjs/sequelize';
 import * as bcrypt from 'bcrypt';
 import { Product } from 'src/products/entities/product.entity';
 import { Op } from 'sequelize';
 import { Order } from 'src/orders/entities/order.entity';
-import { Buyer } from 'src/buyers/entities/buyer.entity';
 
 @Injectable()
 export class RestaurantsService {
   constructor(
-    @InjectModel(Restaurant) private restaurantRepo: typeof Restaurant, // Injeção do modelo
-    @InjectModel(Order) private ordersRepo: typeof Order, // Injeção do modelo
+    @InjectModel(Restaurant) private restaurantRepo: typeof Restaurant,
+    @InjectModel(Order) private ordersRepo: typeof Order,
   ) { }
 
   async create(createRestaurantDto: CreateRestaurantDto) {
@@ -61,25 +59,19 @@ export class RestaurantsService {
     return allProducts;
   }
 
-  async findOne(phone?: string, id?: string) {
-    if (!phone && !id) {
-      throw new BadRequestException('Você deve fornecer o telefone ou o ID do restaurante.');
+  async findOne(where: { id?: string; phone?: string; email?: string }): Promise<Restaurant> {
+    if (!where.id && !where.phone && !where.email) {
+      throw new BadRequestException('Você deve fornecer o ID, telefone ou email do restaurante.');
     }
-
-    const where: any = {};
-    if (phone) where.phone = phone;
-    if (id) where.id = id;
 
     const restaurant = await this.restaurantRepo.findOne({
       where,
       include: [Product],
-      attributes: { exclude: ['password'] },
+      attributes: { include: ['password'] },
     });
 
     if (!restaurant) {
-      throw new NotFoundException(
-        `Restaurante ${phone ? `com o telefone ${phone}` : `com o ID ${id}`} não encontrado.`
-      );
+      throw new NotFoundException('Restaurante não encontrado.');
     }
 
     return restaurant;
