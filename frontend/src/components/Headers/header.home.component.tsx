@@ -29,11 +29,10 @@ export default function Header() {
   const [isEditing, setIsEditing] = useState(false);
 
   useEffect(() => {
-    // Carregar endereço salvo no localStorage
     const savedAddress = localStorage.getItem("clientAddress");
     if (savedAddress) {
       setLocation(JSON.parse(savedAddress));
-      setIsSaved(true); // Se já existe endereço salvo, esconde o botão ao carregar
+      setIsSaved(true);
     }
   }, []);
 
@@ -145,7 +144,6 @@ export default function Header() {
       <hr className="text-takeat-black-500 border" />
       <div className="flex items-center mx-3 gap-2 divide-x divide-takeat-gray-500">
         <span className="flex items-center gap-2 text-xs font-light px-2"><div className="bg-takeat-success-500 rounded-full h-3 w-3 animate-pulse"></div> Aberto / Acessivel</span>
-        {/* <span className="flex items-center gap-2 text-xs font-light px-2"><div className="bg-takeat-success-500 rounded-full h-3 w-3 animate-pulse"></div> Retirada</span> */}
         <span className="flex items-center gap-2 text-xs font-light px-2"><div className="bg-takeat-error-500 rounded-full h-3 w-3 animate-pulse"></div> Fechado / Inacessível</span>
       </div>
     </div>
