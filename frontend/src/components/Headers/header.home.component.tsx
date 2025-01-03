@@ -115,14 +115,14 @@ export default function Header({ username, phone }: ClientProps) {
               <FaUser className="w-5 h-5 text-takeat-white group-hover:text-takeat-error-50" />
             </Link>
           )}
-          <div>
+          <div className="w-full">
             <h2 className="font-medium">{username ? username : 'Takeat app'}</h2>
             <p className="text-sm">{phone ? phone : ''}</p>
             <span className="text-sm flex items-center gap-1">
               {!location.address.road ? (
                 <button onClick={getLocation} className="flex gap-1 items-center"><TiLocation className="text-takeat-black-500" /> Obter Localização</button>
               ) : isEditing ? (
-                <div className="flex flex-col">
+                <div className="flex flex-col gap-2 w-full">
                   <input
                     className="border p-1 rounded"
                     type="text"
@@ -153,7 +153,7 @@ export default function Header({ username, phone }: ClientProps) {
                 </div>
               )}
             </span>
-            <div className="flex gap-3 items-center justify-between">
+            <div className="flex gap-3 items-center justify-between mt-2">
               {location.address.road && !isSaved && <button className="bg-takeat-attention-50 border border-takeat-attention-500 px-5 py-1 w-full rounded-sm shadow-md text-sm" onClick={handleEditAddress}>Editar</button>}
               {location.address.road && !isSaved && <button className="bg-takeat-success-50 border border-takeat-success-500 px-5 py-1 w-full rounded-sm shadow-md text-sm" onClick={handleSaveEditedAddress}>Salvar</button>}
             </div>
