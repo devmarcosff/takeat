@@ -1,6 +1,6 @@
 import { LoadingProps } from "@/types/Types";
 
-export default function Loading({dimension}: LoadingProps) {
+const Loading = ({ dimension }: LoadingProps) => {
 
   return (
     <div className={`cursor-pointer transform-gpu translate-x-0 ${dimension == true ? 'md:w-full' : 'md:w-1/6'} shadow-sm focus:shadow-none translate-y-0 flex-shrink-0 flex-grow-0 w-[var(--slide-size)] min-w-0 pl-[var(--slide-spacing)]`}>
@@ -25,3 +25,5 @@ export default function Loading({dimension}: LoadingProps) {
     </div>
   )
 }
+
+export default Loading

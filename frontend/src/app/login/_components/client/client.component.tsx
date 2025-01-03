@@ -1,5 +1,5 @@
-import Header from "@/components/headers/header.home.component"
-import { OrderProps } from "@/types/Types"
+import Header from "../../../../components/headers/header.home.component"
+import { OrderProps } from "../../../../types/Types"
 import moment from "moment"
 import { ClientLoginProps } from "./client.types"
 
