@@ -1,9 +1,11 @@
 "use client"
 import { IProducts } from "@/types/Types";
 import { Dialog, DialogBackdrop, DialogPanel } from '@headlessui/react';
+import axios from "axios";
 import Image from "next/image";
 import React, { Dispatch, SetStateAction, useState } from "react";
 import { SubmitHandler, useForm } from 'react-hook-form';
+import { toast } from "react-toastify";
 
 interface ModalProps {
   openClient: boolean,
@@ -20,14 +22,48 @@ export default function LoginClientModal({ openClient, setOpenClient }: ModalPro
   const [phone, setPhone] = useState("");
   const { register, handleSubmit } = useForm<AuthFormClientProps>();
 
-  const handleNewPhoneClient: SubmitHandler<AuthFormClientProps> = ({ name }) => {
+  const handleNewPhoneClient: SubmitHandler<AuthFormClientProps> = async ({ name }) => {
     const payload = {
       username: name,
       phone: phone
     }
-    localStorage.setItem('infoClient', JSON.stringify(payload))
-    setOpenClient(false)
-    setPhone('')
+
+    await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/buyers/${payload.phone}`).then(() => {
+      localStorage.setItem('infoClient', JSON.stringify(payload))
+      setOpenClient(false)
+      setPhone('')
+
+      toast.success(`Usuário ${payload.phone} autenticado com sucesso.`, {
+        position: "top-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      });
+    }).catch(() => {
+      axios.post(`${process.env.NEXT_PUBLIC_API_URL}/buyers`, {
+        name: payload.username,
+        phone: payload.phone
+      }).then(() => {
+        localStorage.setItem('infoClient', JSON.stringify(payload))
+        setOpenClient(false)
+        setPhone('')
+
+        toast.success(`Usuário ${payload.username} autenticado com sucesso.`, {
+          position: "top-right",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "light",
+        });
+      })
+    })
   };
 
   const handlePhoneChange = (e: React.ChangeEvent<HTMLInputElement>) => {

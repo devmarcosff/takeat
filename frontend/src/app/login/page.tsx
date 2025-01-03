@@ -34,12 +34,14 @@ export default function Login() {
       const parsedClient: InfoClient = JSON.parse(infoClient);
       if (parsedClient.phone) {
         setUserClient(parsedClient);
-        axios.get(`${process.env.NEXT_PUBLIC_API_URL}/buyers/${parsedClient.phone.replace(/[^\d]/g, "")}`)
+        axios.get(`${process.env.NEXT_PUBLIC_API_URL}/buyers/${parsedClient.phone}`)
           .then((res) => {
             setOrders(res.data.orders)
-            axios.get(`${process.env.NEXT_PUBLIC_API_URL}/restaurants/${res.data.orders[0].restaurantId}?type=id`).then(res => setOrderRestaurant(res.data)).catch(e => console.log(e.response.data.message))
+            if (res.data.orders.length) {
+              axios.get(`${process.env.NEXT_PUBLIC_API_URL}/restaurants/${res.data.orders[0].restaurantId}?type=id`).then(res => setOrderRestaurant(res.data)).catch(e => console.log(e.response.data.message))
+            }
           })
-          .catch((err) => console.log(err.response.data.message))
+          .catch((err) => console.log(err))
         return;
       }
     }
@@ -68,6 +70,6 @@ export default function Login() {
 
         <ClientLogin orderRestaurant={orderRestaurant} orders={orders} userClient={userClientData} />
       </div>
-    </NotFoundLogin >
+    </NotFoundLogin>
   );
 }

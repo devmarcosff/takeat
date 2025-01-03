@@ -5,6 +5,7 @@ import { RiSubtractLine } from "react-icons/ri";
 import { Dialog, DialogBackdrop, DialogPanel, DialogTitle } from '@headlessui/react'
 import { IProducts } from "@/types/Types";
 import Image from "next/image";
+import img from '../../../public/assets/picanha.jpg'
 
 interface ModalProps {
   open: boolean,
@@ -26,7 +27,6 @@ export const calculateTotal = (quantities: number, value: number): number => {
 };
 
 export default function ProductModal({ open, setOpen, snack }: ModalProps) {
-  const img = 'https://takeat-imgs.takeat.app/e29317dec0a27d9c890ce52053160d7a.webp'
   const [quantities, setQuantities] = useState<number>(0);
   const increment = () => setQuantities(quantities + 1);
   const decrement = () => setQuantities(quantities > 0 ? quantities - 1 : 0);

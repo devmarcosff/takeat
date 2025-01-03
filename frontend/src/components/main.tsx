@@ -1,18 +1,18 @@
 "use client"
 
-import React, { useEffect, useState } from 'react'
-import { EmblaOptionsType } from 'embla-carousel'
+import { ISingleRestaurants } from '@/app/[phone]/page'
 import axios from 'axios'
-import { IRestaurants } from '@/types/Types'
-import Restaurants from './restaurants/Restaurants'
+import { EmblaOptionsType } from 'embla-carousel'
+import { useEffect, useState } from 'react'
 import AdsCarousel from './carousel/add-carousel'
+import Restaurants from './restaurants/Restaurants'
 
 const SLIDE_COUNT = 10
 export const SLIDES = Array.from(Array(SLIDE_COUNT).keys())
 
 export default function MainApp() {
 
-  const [restaurants, setRestaurants] = useState<IRestaurants[]>([]);
+  const [restaurants, setRestaurants] = useState<ISingleRestaurants[]>([]);
   const [loading, setLoading] = useState(true);
 
   const OPTIONS: EmblaOptionsType = { align: 'start', loop: restaurants.length > 1 ? true : false }
@@ -20,8 +20,9 @@ export default function MainApp() {
   useEffect(() => {
     const fetchRestaurants = async () => {
       try {
-        const res = await axios.get<IRestaurants[]>(`${process.env.NEXT_PUBLIC_API_URL}/restaurants`);
-        setRestaurants(res.data);
+        await axios.get<ISingleRestaurants[]>(`${process.env.NEXT_PUBLIC_API_URL}/restaurants`).then((res) => {
+          setRestaurants(res.data)
+        })
         setLoading(false);
       } catch (error) {
         console.log(`Erro ao buscar os restaurantes: ${error}`);

@@ -19,7 +19,7 @@ export default function ProductsCart({ products, handleAddProduct, handleRemoveP
           </div>
           <div className="flex items-center justify-between pb-3">
             <p className="text-sm mt-1 font-medium">
-              {product.quantities} x R$ {(product.value ?? 0).toFixed(2)}
+              {product.quantities} x R$ {Number((product.value ?? 0)).toFixed(2)}
             </p>
             <div className="flex items-center justify-center gap-2 border border-takeat-gray-500 rounded-sm shadow-sm w-28 px-4 py-2">
               <button

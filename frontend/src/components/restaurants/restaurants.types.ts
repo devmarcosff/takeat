@@ -1,6 +1,6 @@
-import { IRestaurants } from "@/types/Types";
+import { ISingleRestaurants } from "@/app/[phone]/page";
 
 export interface RestaurantProps {
-    restaurants?: IRestaurants[]
+    restaurants?: ISingleRestaurants[]
     loading?: boolean
 }

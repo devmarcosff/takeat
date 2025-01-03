@@ -2,7 +2,7 @@ import { BuyerProps, OrderProps } from "@/types/Types"
 
 export type ClientLoginProps = {
     userClient?: {
-        name?: string,
+        username?: string,
         phone: string
     },
     orders?: OrderProps[],

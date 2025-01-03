@@ -1,8 +1,8 @@
-import { IRestaurants } from "@/types/Types";
+import { ISingleRestaurants } from "@/app/[phone]/page";
 import { EmblaOptionsType } from "embla-carousel";
 
 export interface CarouselProps {
-    restaurants?: IRestaurants[]
+    restaurants?: ISingleRestaurants[]
     options?: EmblaOptionsType
     loading?: boolean
 }

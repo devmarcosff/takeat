@@ -21,6 +21,12 @@ export class Restaurant extends Model {
     @Column({ type: DataType.STRING, unique: true })
     phone?: string;
 
+    @Column({ type: DataType.STRING, defaultValue: '08:30' })
+    inicio?: string;
+
+    @Column({ type: DataType.STRING, defaultValue: '22:30' })
+    fim?: string;
+
     @Column({ type: DataType.BOOLEAN, defaultValue: false })
     status?: boolean;
 

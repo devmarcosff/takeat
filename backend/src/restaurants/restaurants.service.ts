@@ -29,7 +29,9 @@ export class RestaurantsService {
       email: createRestaurantDto.email,
       phone: createRestaurantDto.phone,
       address: createRestaurantDto.address,
-      has_service_tax: createRestaurantDto.has_service_tax
+      has_service_tax: createRestaurantDto.has_service_tax,
+      inicio: createRestaurantDto.inicio,
+      fim: createRestaurantDto.fim
     });
 
     newRestaurant.password = undefined;
@@ -43,7 +45,13 @@ export class RestaurantsService {
       where: {
         canceledAt: null,
       },
-      include: [{ model: Product }]
+      include: [{
+        model: Product,
+        where: {
+          canceledAt: null,
+        },
+        required: false,
+      }]
     });
 
     return allRestaurants;
@@ -67,7 +75,15 @@ export class RestaurantsService {
 
     const restaurant = await this.restaurantRepo.findOne({
       where,
-      include: [Product],
+      include: [
+        {
+          model: Product,
+          where: {
+            canceledAt: null,
+          },
+          required: false,
+        },
+      ],
       attributes: { include: ['password'] },
     });
 
@@ -131,7 +147,7 @@ export class RestaurantsService {
 
     return `O restaurante já se encontra ativo`
   }
-  
+
   async updateActiveRestaurant(id: string, updateData: Partial<Restaurant>): Promise<void> {
     const restaurant = await this.restaurantRepo.findByPk(id);
 

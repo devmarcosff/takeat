@@ -10,11 +10,11 @@ export default function ClientLogin({ userClient, orders, orderRestaurant }: Cli
     <div className="pb-16">
       <div className={`mb-4 p-4 divide-y flex flex-col gap-3 border border-takeat-error-400/30 rounded bg-white`}>
         <div className="flex items-center gap-3 justify-between">
-          <Header username={userClient?.name} phone={userClient?.phone} />
+          <Header username={userClient?.username} phone={userClient?.phone} />
         </div>
 
         {
-          userClient?.name && (
+          userClient?.username && (
             <div>
               <div className="flex items-center justify-between gap-3 font-medium pt-2">
                 <span className={`text-sm flex items-center gap-1`}>
@@ -34,7 +34,7 @@ export default function ClientLogin({ userClient, orders, orderRestaurant }: Cli
           {
             orders ?
               orders
-                ?.sort((a: OrderProps, b: OrderProps) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()) // Ordena do mais recente para o mais antigo
+                ?.sort((a: OrderProps, b: OrderProps) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime())
                 .map((item: OrderProps, index: number) => {
                   return (
                     <div key={index}>

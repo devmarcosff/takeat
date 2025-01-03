@@ -1,7 +1,12 @@
+"use client"
+import ProductRegisterModal from "@/components/modal/product.register.modal"
 import { IProducts } from "@/types/Types"
 import axios from "axios"
 import Image from "next/image"
 import { useRouter } from "next/navigation"
+import { useState } from "react"
+import { FaTrashAlt } from "react-icons/fa"
+import { IoMdAdd } from "react-icons/io"
 import { IoLogoWhatsapp, IoRestaurant } from "react-icons/io5"
 import { MdEmail } from "react-icons/md"
 import { toast } from "react-toastify"
@@ -10,6 +15,33 @@ import { RestaurantLoginProps } from "./restaurant.types"
 export default function RestaurantLogin({ restaurant }: RestaurantLoginProps) {
   const Logo = '/assets/logo_takeat.png'
   const router = useRouter()
+  const [registerProduct, setRegisterProduct] = useState(false)
+
+  const handleDisableProduct = async ({ id }: IProducts) => {
+    await axios.delete(`${process.env.NEXT_PUBLIC_API_URL}/products/${id}`).then(() => {
+      toast.info(`Produto desativado`, {
+        position: "top-right",
+        autoClose: 2500,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      })
+    }).catch(() => {
+      toast.error(`Erro`, {
+        position: "top-right",
+        autoClose: 2500,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      })
+    })
+  }
 
   if (!restaurant) return null
 
@@ -90,19 +122,18 @@ export default function RestaurantLogin({ restaurant }: RestaurantLoginProps) {
       </div>
 
       <section className="p-3 bg-white rounded-md shadow-sm border border-takeat-gray-500">
-        <div className="flex items-center gap-2">
-          <IoRestaurant className="size-5 text-takeat-error-400" />
-          <h2 className="font-medium">Refeições do restaurante</h2>
+        <div className="flex items-center justify-between gap-2">
+          <div className="flex items-center gap-2">
+            <IoRestaurant className="size-5 text-takeat-error-400" />
+            <h2 className="font-medium">Refeições do restaurante</h2>
+          </div>
+          <div>
+            <button onClick={() => setRegisterProduct(true)} className="bg-takeat-error-400 rounded-md p-1.5 hover:bg-white text-white hover:text-takeat-error-400 border border-takeat-error-400 transition-all"><IoMdAdd /></button>
+          </div>
         </div>
 
-        {restaurant?.products?.map((item: IProducts) => (
-          <div
-            // onClick={() => {
-            //   setOpen(true)
-            // }}
-            key={item.id}
-            className="cursor-pointer transform-gpu mt-2 translate-x-0 shadow-sm focus:shadow-none translate-y-0 flex-shrink-0 flex-grow-0 w-[var(--slide-size)] min-w-0 pl-[var(--slide-spacing)]"
-          >
+        {restaurant?.products?.map((item) => (
+          <div key={item.id} className="cursor-pointer transform-gpu mt-2 translate-x-0 shadow-sm focus:shadow-none translate-y-0 flex-shrink-0 flex-grow-0 w-[var(--slide-size)] min-w-0 pl-[var(--slide-spacing)]">
             <div className="flex flex-col p-4 hover:bg-takeat-gray-300 border rounded-md border-takeat-gray-500 shadow-sm w-full bg-takeat-white-50">
               <div className="flex items-center gap-4">
                 <div className="flex items-center w-full justify-between gap-2">
@@ -120,10 +151,14 @@ export default function RestaurantLogin({ restaurant }: RestaurantLoginProps) {
                   alt={'Takeat'}
                 />
               </div>
+              <div className="absolute right-3 top-1">
+                <button onClick={() => handleDisableProduct(item)}><FaTrashAlt className="text-xs text-takeat-error-400" /></button>
+              </div>
             </div>
           </div>
         ))}
       </section>
+      <ProductRegisterModal open={registerProduct} setOpen={setRegisterProduct} restaurantId={restaurant} />
     </div>
   )
 }

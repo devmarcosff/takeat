@@ -12,8 +12,8 @@ import RestaurantCart from "./_components/restaurant/restaurant.component";
 import ResumeCart from "./_components/resume/resume.component";
 
 interface InfoClient {
-  name?: string;
-  phone: string | undefined;
+  username?: string | undefined;
+  phone?: string | undefined;
 }
 
 const Cart = () => {
@@ -32,14 +32,13 @@ const Cart = () => {
     if (infoClient) {
       const parsedClient: InfoClient = JSON.parse(infoClient);
       const phone = parsedClient.phone
-      const phoneRegex = new RegExp(/[^\d]/g)
-      if (phone) setPhoneNumber(phone.replace(phoneRegex, ""))
+      // const phoneRegex = new RegExp(/[^\d]/g)
+      if (phone) setPhoneNumber(phone)
       setInfoClient(parsedClient)
     }
+
     const storedProducts = JSON.parse(localStorage.getItem("products") || "[]");
     setProducts(storedProducts);
-
-
     if (storedProducts.length > 0) {
       const restaurantId = storedProducts[0]?.restaurant_id;
       fetchRestaurant(restaurantId);
@@ -169,6 +168,22 @@ const Cart = () => {
     }
   };
 
+  const handlePhoneChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    let value = e.target.value;
+    value = value.replace(/\D/g, "");
+    if (value.length > 0) {
+      value = "(" + value;
+    }
+    if (value.length > 3) {
+      value = value.slice(0, 3) + ") " + value.slice(3);
+    }
+    if (value.length > 10) {
+      value = value.slice(0, 10) + "-" + value.slice(10);
+    }
+
+    setPhoneNumber(value.slice(0, 15));
+  };
+
   const totalWithServiceTax = restaurant?.restaurant?.has_service_tax ? total * 1.1 : total;
 
   return (
@@ -198,15 +213,20 @@ const Cart = () => {
                   <button onClick={() => {
                     localStorage.removeItem('infoClient')
                     setInfoClient({ phone: undefined })
-                  }} className="absolute py-2.5 right-0 font-medium h-full text-sm bg-takeat-error-50 border-takeat-gray-500 border px-2 rounded-md">Trocar número</button>
+                  }} className="absolute py-2.5 right-0 font-medium h-full text-sm bg-takeat-error-50 border-takeat-gray-500 border px-2 rounded-md min-w-[150]">Trocar número</button>
                 </div>
               ) : (
                 <input
-                  type="tel"
-                  placeholder="Seu número de telefone"
+                  id="tel"
+                  name="tel"
+                  type="text"
+                  required
                   value={phoneNumber}
-                  onChange={(e) => setPhoneNumber(e.target.value)}
-                  className="w-full p-2 border rounded mb-2"
+                  onChange={handlePhoneChange}
+                  maxLength={15}
+                  autoComplete="tel"
+                  placeholder="(00) 00000-0000"
+                  className="block w-full rounded-md bg-white mb-3 px-3 py-1.5 text-base text-gray-900 outline outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6"
                 />
               )
             }

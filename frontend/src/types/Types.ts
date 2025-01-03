@@ -3,7 +3,7 @@ import { EmblaOptionsType } from "embla-carousel";
 export interface IProducts {
   id: string,
   name?: string,
-  description: string,
+  description?: string,
   value: number,
   restaurant_id?: string,
   quantities?: number
