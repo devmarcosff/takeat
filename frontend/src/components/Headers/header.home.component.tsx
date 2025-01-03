@@ -153,7 +153,7 @@ export default function Header({ username, phone }: ClientProps) {
                 </div>
               )}
             </span>
-            <div className="flex gap-3 items-center justify-between mt-2">
+            <div className="flex gap-3 items-center justify-between mt-2 md:max-w-96">
               {location.address.road && !isSaved && <button className="bg-takeat-attention-50 border border-takeat-attention-500 px-5 py-1 w-full rounded-sm shadow-md text-sm" onClick={handleEditAddress}>Editar</button>}
               {location.address.road && !isSaved && <button className="bg-takeat-success-50 border border-takeat-success-500 px-5 py-1 w-full rounded-sm shadow-md text-sm" onClick={handleSaveEditedAddress}>Salvar</button>}
             </div>
