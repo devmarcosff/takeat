@@ -1,7 +1,6 @@
 import { LoadingProps } from "@/types/Types";
 
 const Loading = ({ dimension }: LoadingProps) => {
-
   return (
     <div className={`cursor-pointer transform-gpu translate-x-0 ${dimension == true ? 'md:w-full' : 'md:w-1/6'} shadow-sm focus:shadow-none translate-y-0 flex-shrink-0 flex-grow-0 w-[var(--slide-size)] min-w-0 pl-[var(--slide-spacing)]`}>
       <div className="flex flex-col p-4 hover:bg-takeat-gray-300 border rounded-md border-takeat-gray-500 shadow-sm w-full bg-takeat-white-50 animate-pulse">

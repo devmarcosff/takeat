@@ -4,7 +4,7 @@ import useEmblaCarousel from 'embla-carousel-react'
 import Image from 'next/image'
 import Link from 'next/link'
 import React from 'react'
-import Loading from '../loading/loading.restaurants.component'
+import Loading from '../Loading/loading.restaurants.component'
 import { SLIDES } from '../main'
 import { CarouselProps } from './carousel.types'
 

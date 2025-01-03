@@ -1,7 +1,7 @@
 "use client"
-import HeaderRestaurant from "../../components/headers/header.restaurant.component";
-import LoadingHeader from "../../components/loading/loading.header.component";
-import Loading from "../../components/loading/loading.restaurants.component";
+import HeaderRestaurant from "../../components/Headers/header.restaurant.component";
+import LoadingHeader from "../../components/Headers/header.home.component";
+import Loading from "../../components/Loading/loading.restaurants.component";
 import ProductModal from "../../components/modal/product.modal";
 import { IProducts } from "../../types/Types";
 import axios from "axios";

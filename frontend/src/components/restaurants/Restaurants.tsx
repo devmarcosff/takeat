@@ -1,7 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { IoRestaurant } from "react-icons/io5";
-import Loading from "../loading/loading.restaurants.component";
+import Loading from "../Loading/loading.restaurants.component";
 import { SLIDES } from "../main";
 import { RestaurantProps } from "./restaurants.types";
 

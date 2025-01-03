@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { Poppins } from "next/font/google";
 import "./globals.css";
-import Menu from "@/components/menu/menu.component";
+import Menu from "../components/Menu/menu.component";
 import { ToastContainer } from "react-toastify";
 
 export const metadata: Metadata = {

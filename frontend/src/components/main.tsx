@@ -4,7 +4,7 @@ import React, { useEffect, useState } from 'react'
 import { EmblaOptionsType } from 'embla-carousel'
 import axios from 'axios'
 import { IRestaurants } from '@/types/Types'
-import Restaurants from './restaurants/restaurants'
+import Restaurants from './restaurants/Restaurants'
 import AdsCarousel from './carousel/add-carousel'
 
 const SLIDE_COUNT = 10

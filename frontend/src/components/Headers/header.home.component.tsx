@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import { TiLocation } from "react-icons/ti";
 import { FaStreetView, FaUser } from "react-icons/fa";
 import { FaMapLocation } from "react-icons/fa6";
-import LoadingHeader from "../loading/loading.header.component";
+import LoadingHeader from "../Loading/loading.header.component";
 import Link from "next/link";
 
 interface ClientProps {
