@@ -2,7 +2,7 @@
 import HeaderRestaurant from "@/components/headers/header.restaurant.component";
 import Loading from "@/components/loading/loading.restaurants.component";
 import LoadingHeader from "@/components/loading/loading.header.component";
-import { IProducts, IRestaurants } from "@/types/Types";
+import { IProducts } from "@/types/Types";
 import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { IoRestaurant } from "react-icons/io5";
@@ -14,8 +14,26 @@ interface Props {
   params: Promise<{ phone: string }>;
 }
 
+export interface ISingleRestaurants {
+  id?: string; // UUID
+  url?: string; // URL da imagem
+  username?: string; // Nome do restaurante
+  email?: string; // Email do restaurante
+  phone?: string; // Telefone em formato string
+  address?: string; // Endereço
+  categoria?: string; // Categoria do restaurante
+  has_service_tax?: boolean; // Indica se há taxa de serviço
+  canceledAt?: string | null; // Data de cancelamento ou null
+  createdAt?: Date | string
+  inicio?: string; // Hora de início no formato string (ex?: "8?:30")
+  fim?: string; // Hora de término no formato string (ex?: "22?:40")
+  status?: number; // Status numérico
+  createAt?: string; // Data de criação em formato string (ISO 8601)
+  products?: IProducts[]
+}
+
 export default function RestaurantePage({ params }: Props) {
-  const [restaurant, setRestaurant] = useState<IRestaurants | null>(null);
+  const [restaurant, setRestaurant] = useState<ISingleRestaurants | null>(null);
   const [loading, setLoading] = useState(true);
   const [open, setOpen] = useState(false)
   const [snack, setSnack] = useState<IProducts>({
@@ -34,7 +52,7 @@ export default function RestaurantePage({ params }: Props) {
 
     const fetchRestaurant = async () => {
       try {
-        const res = await axios.get<IRestaurants>(`${process.env.NEXT_PUBLIC_API_URL}/restaurants/${phone}`);
+        const res = await axios.get<ISingleRestaurants>(`${process.env.NEXT_PUBLIC_API_URL}/restaurants/${phone}`);
         setRestaurant(res.data);
         setLoading(false);
       } catch (error) {

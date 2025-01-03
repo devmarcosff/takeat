@@ -13,4 +13,10 @@ export class AuthController {
 
     return this.authService.login(identifier, password);
   }
+
+  @Patch('logout/:id')
+  async logout(@Param('id') id: string) {
+    await this.authService.logout(id);
+    return { message: 'Logout realizado com sucesso' };
+  }
 }

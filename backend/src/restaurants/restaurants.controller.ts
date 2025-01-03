@@ -1,7 +1,6 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, Query, UseGuards, BadRequestException } from '@nestjs/common';
-import { RestaurantsService } from './restaurants.service';
+import { BadRequestException, Body, Controller, Delete, Get, Param, Patch, Post, Query } from '@nestjs/common';
 import { CreateRestaurantDto } from './dto/create-restaurant.dto';
-import { AuthGuard } from '@nestjs/passport';
+import { RestaurantsService } from './restaurants.service';
 
 @Controller('restaurants')
 export class RestaurantsController {
@@ -41,24 +40,24 @@ export class RestaurantsController {
   }
 
 
-  @UseGuards(AuthGuard('jwt'))
+  // @UseGuards(AuthGuard('jwt'))
   @Get('/products/:id')
   findProductsRestaurant(@Param('id') id: string) {
     return this.restaurantsService.findProductsRestaurant(id);
   }
-  @UseGuards(AuthGuard('jwt'))
+  // @UseGuards(AuthGuard('jwt'))
   @Get('/orders/:id')
   findOrdersRestaurant(@Param('id') id: string) {
     return this.restaurantsService.findOrdersRestaurant(id);
   }
 
-  @UseGuards(AuthGuard('jwt'))
+  // @UseGuards(AuthGuard('jwt'))
   @Patch(':id')
   update(@Param('id') id: string) {
     return this.restaurantsService.update(id);
   }
 
-  @UseGuards(AuthGuard('jwt'))
+  // @UseGuards(AuthGuard('jwt'))
   @Delete(':id')
   remove(@Param('id') id: string) {
     return this.restaurantsService.remove(id);

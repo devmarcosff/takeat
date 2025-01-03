@@ -4,6 +4,7 @@ import { UpdateBuyerDto } from './dto/update-buyer.dto';
 import { InjectModel } from '@nestjs/sequelize';
 import { Buyer } from './entities/buyer.entity';
 import { Order } from 'src/orders/entities/order.entity';
+import { Product } from 'src/products/entities/product.entity';
 
 @Injectable()
 export class BuyersService {
@@ -27,17 +28,15 @@ export class BuyersService {
   }
 
   async findAll() {
-    const allProducts = await this.buyerRepo.findAll({
+    const allBuyers = await this.buyerRepo.findAll({
       include: [Order]
     });
 
-    return allProducts;
+    return allBuyers;
   }
 
   async findOne(phone: string) {
-    const existingBuyer = await this.buyerRepo.findOne({
-      where: { phone }
-    });
+    const existingBuyer = await this.buyerRepo.findOne({ where: { phone }, include: [Order] });
 
     if (!existingBuyer) {
       throw new NotFoundException(`Cliente com o telefone ${phone} não encontrado.`);

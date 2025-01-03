@@ -5,60 +5,45 @@ import { IProducts } from "@/types/Types";
 import Logo from '../../../assets/logo_takeat.png'
 import Image from "next/image";
 import { useForm } from 'react-hook-form';
-import axios from "axios";
-import { toast } from "react-toastify";
-import { AiOutlineLoading3Quarters } from "react-icons/ai";
 
 interface ModalProps {
-  open: boolean,
-  setOpen: any,
+  openClient: boolean,
+  setOpenClient: any,
   snack?: IProducts
-  typeUser?: string
 }
 
-export default function LoginModal({ open, setOpen, typeUser }: ModalProps) {
+export default function LoginClientModal({ openClient, setOpenClient }: ModalProps) {
+  const [phone, setPhone] = useState("");
   const { register, handleSubmit } = useForm();
-  const [loading, setLoading] = useState<boolean>(false)
 
-  const handleAuthRestaurant = ({ email, password }: any) => {
-    setLoading(true)
-
+  const handleNewPhoneClient = (data: any) => {
     const payload = {
-      identifier: email,
-      password: password
+      username: data.name,
+      phone: phone
+    }
+    localStorage.setItem('infoClient', JSON.stringify(payload))
+    setOpenClient(false)
+    setPhone('')
+  };
+
+  const handlePhoneChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    let value = e.target.value;
+    value = value.replace(/\D/g, "");
+    if (value.length > 0) {
+      value = "(" + value;
+    }
+    if (value.length > 3) {
+      value = value.slice(0, 3) + ") " + value.slice(3);
+    }
+    if (value.length > 10) {
+      value = value.slice(0, 10) + "-" + value.slice(10);
     }
 
-    axios.post(`${process.env.NEXT_PUBLIC_API_URL}/auth/login`, payload).then((res) => {
-      localStorage.setItem("restaurantAuth", JSON.stringify(res.data));
-      toast.success(`Conectando ao restaurante...`, {
-        position: "top-right",
-        autoClose: 5000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        theme: "light",
-      })
-      setLoading(false)
-      setOpen(false)
-    }).catch(err => {
-      toast.error(`${err.response.data.message}`, {
-        position: "top-right",
-        autoClose: 5000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        theme: "light",
-      })
-      setLoading(false)
-    })
+    setPhone(value.slice(0, 15));
   };
 
   return (
-    <Dialog open={open} onClose={setOpen} className="relative z-50">
+    <Dialog open={openClient} onClose={setOpenClient} className="relative z-50">
       <DialogBackdrop
         transition
         className="fixed inset-0 bg-gray-500/75 transition-opacity data-[closed]:opacity-0 data-[enter]:duration-300 data-[leave]:duration-200 data-[enter]:ease-out data-[leave]:ease-in"
@@ -81,42 +66,41 @@ export default function LoginModal({ open, setOpen, typeUser }: ModalProps) {
                 <h2 className="mt-10 text-center text-2xl/9 font-bold tracking-tight text-takeat-black-500">
                   Takeat App
                 </h2>
-                <p className="text-center text-sm">Faça login na sua conta</p>
+                <p className="text-center text-sm">Informe seu número de telefone.</p>
               </div>
 
               <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
-                <form className="space-y-6" onSubmit={handleSubmit(handleAuthRestaurant)}>
+                <form className="space-y-6" onSubmit={handleSubmit(handleNewPhoneClient)}>
                   <div>
-                    <label htmlFor="email" className="block text-sm/6 font-medium text-gray-900">
-                      Email
+                    <label className="block text-sm/6 font-medium text-gray-900">
+                      Nome <span className="text-xs text-takeat-error-400">(Opicional)</span>
                     </label>
                     <div className="mt-2">
                       <input
-                        {...register('email')}
-                        id="email"
-                        name="email"
-                        type="email"
-                        required
-                        autoComplete="email"
+                        {...register('name')}
+                        id="name"
+                        name="name"
+                        type="text"
+                        placeholder="Insira seu nome"
                         className="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6"
                       />
                     </div>
                   </div>
-
                   <div>
-                    <div className="flex items-center justify-between">
-                      <label htmlFor="password" className="block text-sm/6 font-medium text-gray-900">
-                        Senha
-                      </label>
-                    </div>
+                    <label className="block text-sm/6 font-medium text-gray-900">
+                      Telefone
+                    </label>
                     <div className="mt-2">
                       <input
-                        {...register('password')}
-                        id="password"
-                        name="password"
-                        type="password"
+                        id="tel"
+                        name="tel"
+                        type="text"
                         required
-                        autoComplete="current-password"
+                        value={phone}
+                        onChange={handlePhoneChange}
+                        maxLength={15}
+                        autoComplete="tel"
+                        placeholder="(00) 00000-0000"
                         className="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6"
                       />
                     </div>
@@ -124,25 +108,17 @@ export default function LoginModal({ open, setOpen, typeUser }: ModalProps) {
 
                   <div>
                     <button
-                      disabled={loading}
                       className="flex w-full justify-center transition-all rounded-md bg-takeat-error-400 px-3 py-1.5 text-sm/6 font-semibold text-white shadow-sm hover:bg-takeat-error-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
                     >
-                      {loading ? <AiOutlineLoading3Quarters className="animate-spin" /> : 'Acessar'}
+                      Confirmar telefone
                     </button>
                   </div>
                 </form>
-
-                <p className="mt-10 text-center text-sm/6 text-gray-500">
-                  Não possui conta?{' '}
-                  <a href="#" className="font-semibold text-takeat-error-400 hover:text-takeat-error-500 transition-all">
-                    Criar conta agora
-                  </a>
-                </p>
               </div>
             </div>
           </DialogPanel>
         </div>
       </div>
     </Dialog>
-  )
+  );
 }

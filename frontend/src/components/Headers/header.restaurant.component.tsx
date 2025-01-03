@@ -3,9 +3,10 @@ import { IRestaurants } from "@/types/Types";
 import Image from "next/image";
 import { TiLocation } from "react-icons/ti";
 import Logo from '../../../assets/logo_takeat.png'
+import { ISingleRestaurants } from "@/app/[phone]/page";
 
 interface HeaderProps {
-  restaurant: IRestaurants
+  restaurant: ISingleRestaurants
 }
 
 export default function HeaderRestaurant({ restaurant }: HeaderProps) {

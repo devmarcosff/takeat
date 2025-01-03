@@ -1,4 +1,4 @@
-import { BadRequestException, Injectable, UnauthorizedException } from '@nestjs/common';
+import { BadRequestException, Injectable, NotFoundException, UnauthorizedException } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import * as bcrypt from 'bcrypt';
 import { RestaurantsService } from 'src/restaurants/restaurants.service';
@@ -37,20 +37,42 @@ export class AuthService {
     return null;
   }
 
-  async login(identifier: string, password: string): Promise<any> {
-    const user = await this.validateUser(identifier, password);
+  async login(identifier: string, password: string): Promise<{ restaurant: any; accessToken: string }> {
+    // Buscar o restaurante com base no identificador (e-mail ou telefone)
+    const restaurant = await this.restaurantRepo.findOne({ email: identifier });
 
-    if (!user) throw new UnauthorizedException('Credenciais inválidas');
+    if (!restaurant) {
+      throw new UnauthorizedException('Credenciais inválidas');
+    }
 
-    const payload = { username: user.username, sub: user.id };
-    const token = this.jwtService.sign(payload);
+    // Verificar a senha
+    const isPasswordValid = await bcrypt.compare(password, restaurant.password);
+    if (!isPasswordValid) {
+      throw new UnauthorizedException('Credenciais inválidas');
+    }
 
-    const { password: _, ...restaurantInfo } = user;
+    // Gerar o token
+    const payload = { id: restaurant.id, username: restaurant.username };
+    const accessToken = this.jwtService.sign(payload);
 
-    return {
-      ...restaurantInfo,
-      token,
-    };
+    // Atualizar o status do restaurante para `true`
+    await this.restaurantRepo.updateActiveRestaurant(restaurant.id, { status: true });
+
+    // Buscar novamente os dados atualizados do restaurante
+    const updatedRestaurant = await this.restaurantRepo.findOne({ id: restaurant.id });
+
+    return { restaurant: updatedRestaurant, accessToken };
+  }
+
+  async logout(id: string): Promise<void> {
+    const restaurant = await this.restaurantRepo.findByPk(id);
+
+    if (!restaurant) {
+      throw new NotFoundException('Restaurante não encontrado');
+    }
+
+    // Atualizar o status para false
+    await restaurant.update({ status: false });
   }
 
 }

@@ -1,3 +1,4 @@
+import { UpdateRestaurantDto } from './dto/update-restaurant.dto';
 import { Restaurant } from './entities/restaurant.entity';
 import { BadRequestException, ConflictException, Inject, Injectable, NotFoundException } from '@nestjs/common';
 import { CreateRestaurantDto } from './dto/create-restaurant.dto';
@@ -103,22 +104,42 @@ export class RestaurantsService {
     return existingOrder.orders;
   }
 
-  async update(id: string) {
-    const product = await this.restaurantRepo.findByPk(id);
+  async findByPk(id: string): Promise<Restaurant> {
+    const restaurant = await this.restaurantRepo.findByPk(id);
 
-    if (!product) {
+    if (!restaurant) {
       throw new NotFoundException('Restaurante não encontrado');
     }
 
-    if (product.canceledAt) {
-      await product.update({
+    return restaurant;
+  }
+
+  async update(id: string) {
+    const restaurant = await this.restaurantRepo.findByPk(id);
+
+    if (!restaurant) {
+      throw new NotFoundException('Restaurante não encontrado');
+    }
+
+    if (restaurant.canceledAt) {
+      await restaurant.update({
         canceledAt: null,
       });
 
-      return `O restaurante "${product.username}" foi reativado com sucesso`
+      return `O restaurante "${restaurant.username}" foi reativado com sucesso`
     }
 
     return `O restaurante já se encontra ativo`
+  }
+  
+  async updateActiveRestaurant(id: string, updateData: Partial<Restaurant>): Promise<void> {
+    const restaurant = await this.restaurantRepo.findByPk(id);
+
+    if (!restaurant) {
+      throw new NotFoundException('Restaurante não encontrado');
+    }
+
+    await restaurant.update(updateData);
   }
 
   async remove(id: string): Promise<string> {

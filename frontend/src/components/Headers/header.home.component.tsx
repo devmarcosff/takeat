@@ -3,11 +3,18 @@ import Image from "next/image";
 import { useEffect, useState } from "react";
 import { TiLocation } from "react-icons/ti";
 import Logo from '../../../assets/logo_takeat.png'
-import { FaStreetView } from "react-icons/fa";
+import { FaStreetView, FaUser } from "react-icons/fa";
 import { FaMapLocation } from "react-icons/fa6";
 import LoadingHeader from "../loading/loading.header.component";
+import Link from "next/link";
 
-export default function Header() {
+interface ClientProps {
+  username?: string
+  restaurantId?: string
+  phone?: string
+}
+
+export default function Header({ username, phone }: ClientProps) {
   const [location, setLocation] = useState<{
     latitude: number | null;
     longitude: number | null;
@@ -98,46 +105,58 @@ export default function Header() {
     <div className="flex flex-col gap-3 p-3 border rounded-md border-takeat-gray-500 shadow-sm w-full bg-takeat-white-50">
       <div className="flex items-center gap-3">
         <Image src={Logo} height={64} width={64} className="h-16" alt="Takeat App" />
-        <div>
-          <h2 className="font-medium">Takeat app</h2>
-          <span className="text-sm flex items-center gap-1">
-            {!location.address.road ? (
-              <button onClick={getLocation} className="flex gap-1 items-center"><TiLocation className="text-takeat-black-500" /> Obter Localização</button>
-            ) : isEditing ? (
-              <div className="flex flex-col">
-                <input
-                  className="border p-1 rounded"
-                  type="text"
-                  value={location.address.road || ""}
-                  placeholder="Rua"
-                  onChange={(e) => handleAddressChange("road", e.target.value)}
-                />
-                <input
-                  className="border p-1 rounded"
-                  type="text"
-                  value={location.address.town || ""}
-                  placeholder="Cidade"
-                  onChange={(e) => handleAddressChange("town", e.target.value)}
-                />
-                <input
-                  className="border p-1 rounded"
-                  type="text"
-                  value={location.address.state || ""}
-                  placeholder="Estado"
-                  onChange={(e) => handleAddressChange("state", e.target.value)}
-                />
-              </div>
-            ) : (
-              <div className="flex flex-col">
-                <p className="flex gap-1 items-center"><FaStreetView className="text-takeat-black-500" /> {location.address.road}</p>
-                <p className="flex gap-1 items-center"><TiLocation className="text-takeat-black-500" /> {location.address.town}</p>
-                <p className="flex gap-1 items-center"><FaMapLocation className="text-takeat-black-500" /> {location.address.state}</p>
-              </div>
-            )}
-          </span>
-          <div className="flex gap-3 items-center justify-between">
-            {location.address.road && !isSaved && <button className="bg-takeat-attention-50 border border-takeat-attention-500 px-5 py-1 w-full rounded-sm shadow-md text-sm" onClick={handleEditAddress}>Editar</button>}
-            {location.address.road && !isSaved && <button className="bg-takeat-success-50 border border-takeat-success-500 px-5 py-1 w-full rounded-sm shadow-md text-sm" onClick={handleSaveEditedAddress}>Salvar</button>}
+        <div className="flex justify-between items-start w-full flex-row-reverse">
+          {phone ? (
+            <Link href={'/'} onClick={() => localStorage.removeItem('infoClient')} className="flex items-center gap-2 text-xs bg-takeat-error-400 px-2 py-1 shadow-md text-white font-medium rounded-sm">
+              Sair
+            </Link>
+          ) : (
+            <Link href={'/login'} className="flex items-center p-1.5 gap-2 text-xs bg-takeat-error-400 shadow-md text-white font-medium rounded-full">
+              <FaUser className="w-5 h-5 text-takeat-white group-hover:text-takeat-error-50" />
+            </Link>
+          )}
+          <div>
+            <h2 className="font-medium">{username ? username : 'Takeat app'}</h2>
+            <p className="text-sm">{phone ? phone : ''}</p>
+            <span className="text-sm flex items-center gap-1">
+              {!location.address.road ? (
+                <button onClick={getLocation} className="flex gap-1 items-center"><TiLocation className="text-takeat-black-500" /> Obter Localização</button>
+              ) : isEditing ? (
+                <div className="flex flex-col">
+                  <input
+                    className="border p-1 rounded"
+                    type="text"
+                    value={location.address.road || ""}
+                    placeholder="Rua"
+                    onChange={(e) => handleAddressChange("road", e.target.value)}
+                  />
+                  <input
+                    className="border p-1 rounded"
+                    type="text"
+                    value={location.address.town || ""}
+                    placeholder="Cidade"
+                    onChange={(e) => handleAddressChange("town", e.target.value)}
+                  />
+                  <input
+                    className="border p-1 rounded"
+                    type="text"
+                    value={location.address.state || ""}
+                    placeholder="Estado"
+                    onChange={(e) => handleAddressChange("state", e.target.value)}
+                  />
+                </div>
+              ) : (
+                <div className="flex flex-col">
+                  <p className="flex gap-1 items-center"><FaStreetView className="text-takeat-black-500" /> {location.address.road}</p>
+                  <p className="flex gap-1 items-center"><TiLocation className="text-takeat-black-500" /> {location.address.town}</p>
+                  <p className="flex gap-1 items-center"><FaMapLocation className="text-takeat-black-500" /> {location.address.state}</p>
+                </div>
+              )}
+            </span>
+            <div className="flex gap-3 items-center justify-between">
+              {location.address.road && !isSaved && <button className="bg-takeat-attention-50 border border-takeat-attention-500 px-5 py-1 w-full rounded-sm shadow-md text-sm" onClick={handleEditAddress}>Editar</button>}
+              {location.address.road && !isSaved && <button className="bg-takeat-success-50 border border-takeat-success-500 px-5 py-1 w-full rounded-sm shadow-md text-sm" onClick={handleSaveEditedAddress}>Salvar</button>}
+            </div>
           </div>
         </div>
       </div>
