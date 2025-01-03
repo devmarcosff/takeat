@@ -5,7 +5,7 @@ import { EmblaOptionsType } from 'embla-carousel'
 import axios from 'axios'
 import { IRestaurants } from '@/types/Types'
 import Restaurants from './restaurants/restaurants'
-import AdsCarousel from './carousel/adsCarousel'
+import AdsCarousel from './carousel/add-carousel'
 
 const SLIDE_COUNT = 10
 export const SLIDES = Array.from(Array(SLIDE_COUNT).keys())
