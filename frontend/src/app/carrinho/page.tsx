@@ -32,7 +32,8 @@ const Cart = () => {
     if (infoClient) {
       const parsedClient: InfoClient = JSON.parse(infoClient);
       const phone = parsedClient.phone
-      phone && setPhoneNumber(phone.replace(/[^\d]/g, ""))
+      const phoneRegex = new RegExp(/[^\d]/g)
+      if (phone) setPhoneNumber(phone.replace(phoneRegex, ""))
       setInfoClient(parsedClient)
     }
     const storedProducts = JSON.parse(localStorage.getItem("products") || "[]");
@@ -174,7 +175,7 @@ const Cart = () => {
     <div className="p-4 pb-16 h-full">
       <LoadingCart isLoading={isLoading}>
         <NotFoundCart isNotFound={!restaurant}>
-          <RestaurantCart restaurant={restaurant} />
+          <RestaurantCart restaurant={restaurant?.restaurant} />
 
           <ProductsCart handleRemoveProduct={handleRemoveProduct} handleAddProduct={handleAddProduct} products={products} />
 

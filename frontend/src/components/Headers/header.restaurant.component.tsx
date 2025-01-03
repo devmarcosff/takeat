@@ -1,15 +1,15 @@
 "use client"
-import { IRestaurants } from "@/types/Types";
+import { ISingleRestaurants } from "@/app/[phone]/page";
 import Image from "next/image";
 import { TiLocation } from "react-icons/ti";
-import Logo from '../../../assets/logo_takeat.png'
-import { ISingleRestaurants } from "@/app/[phone]/page";
 
 interface HeaderProps {
   restaurant: ISingleRestaurants
 }
 
 export default function HeaderRestaurant({ restaurant }: HeaderProps) {
+  const Logo = '/assets/logo_takeat.png'
+  
   return (
     <div className="flex flex-col gap-3 p-3 border rounded-md border-takeat-gray-500 shadow-sm w-full bg-takeat-white-50">
       <div className="flex items-center gap-3">

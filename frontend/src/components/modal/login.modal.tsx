@@ -1,26 +1,25 @@
 "use client"
-import React, { useState } from "react";
-import { Dialog, DialogBackdrop, DialogPanel } from '@headlessui/react'
-import { IProducts } from "@/types/Types";
-import Logo from '../../../assets/logo_takeat.png'
-import Image from "next/image";
-import { useForm } from 'react-hook-form';
+import { AuthFormProps, IProducts } from "@/types/Types";
+import { Dialog, DialogBackdrop, DialogPanel } from '@headlessui/react';
 import axios from "axios";
-import { toast } from "react-toastify";
+import Image from "next/image";
+import { Dispatch, SetStateAction, useState } from "react";
+import { SubmitHandler, useForm } from 'react-hook-form';
 import { AiOutlineLoading3Quarters } from "react-icons/ai";
+import { toast } from "react-toastify";
 
 interface ModalProps {
   open: boolean,
-  setOpen: any,
+  setOpen: Dispatch<SetStateAction<boolean>>,
   snack?: IProducts
-  typeUser?: string
 }
 
-export default function LoginModal({ open, setOpen, typeUser }: ModalProps) {
-  const { register, handleSubmit } = useForm();
+export default function LoginModal({ open, setOpen }: ModalProps) {
+  const Logo = '/assets/logo_takeat.png'
+  const { register, handleSubmit } = useForm<AuthFormProps>();
   const [loading, setLoading] = useState<boolean>(false)
 
-  const handleAuthRestaurant = ({ email, password }: any) => {
+  const handleAuthRestaurant: SubmitHandler<AuthFormProps> = ({ email, password }) => {
     setLoading(true)
 
     const payload = {

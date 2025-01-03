@@ -1,24 +1,28 @@
 "use client"
-import React, { useState } from "react";
-import { Dialog, DialogBackdrop, DialogPanel } from '@headlessui/react'
 import { IProducts } from "@/types/Types";
-import Logo from '../../../assets/logo_takeat.png'
+import { Dialog, DialogBackdrop, DialogPanel } from '@headlessui/react';
 import Image from "next/image";
-import { useForm } from 'react-hook-form';
+import React, { Dispatch, SetStateAction, useState } from "react";
+import { SubmitHandler, useForm } from 'react-hook-form';
 
 interface ModalProps {
   openClient: boolean,
-  setOpenClient: any,
+  setOpenClient: Dispatch<SetStateAction<boolean>>,
   snack?: IProducts
 }
 
-export default function LoginClientModal({ openClient, setOpenClient }: ModalProps) {
-  const [phone, setPhone] = useState("");
-  const { register, handleSubmit } = useForm();
+interface AuthFormClientProps {
+  name: string
+}
 
-  const handleNewPhoneClient = (data: any) => {
+export default function LoginClientModal({ openClient, setOpenClient }: ModalProps) {
+  const Logo = '/assets/logo_takeat.png'
+  const [phone, setPhone] = useState("");
+  const { register, handleSubmit } = useForm<AuthFormClientProps>();
+
+  const handleNewPhoneClient: SubmitHandler<AuthFormClientProps> = ({ name }) => {
     const payload = {
-      username: data.name,
+      username: name,
       phone: phone
     }
     localStorage.setItem('infoClient', JSON.stringify(payload))

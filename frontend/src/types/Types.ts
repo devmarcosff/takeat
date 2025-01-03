@@ -4,7 +4,7 @@ export interface IProducts {
   id: string,
   name?: string,
   description: string,
-  value?: number | any,
+  value: number,
   restaurant_id?: string,
   quantities?: number
 }
@@ -30,8 +30,13 @@ export interface IRestaurants {
   }
 }
 
+export interface AuthFormProps {
+  email: string,
+  password: string
+}
+
 export interface PropType {
-  restaurants?: IRestaurants[]
+  restaurants?: IRestaurants['restaurant'][]
   options?: EmblaOptionsType
   loading?: boolean
 }
@@ -39,3 +44,25 @@ export interface PropType {
 export interface LoadingProps {
   dimension?: boolean;
 };
+
+export interface OrderProps {
+  id: string,
+  amount: number,
+  total_price: number,
+  total_service_price: number,
+  canceled_at: Date,
+  restaurantId: string,
+  buyerId: string,
+  createdAt: Date,
+  buyer: BuyerProps
+}
+
+export interface BuyerProps {
+  id: string,
+  username: string,
+  phone: string,
+  createdAt: Date,
+  updatedAt: Date,
+  has_service_tax?: boolean;
+  orders: []
+}

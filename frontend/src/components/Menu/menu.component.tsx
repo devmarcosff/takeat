@@ -1,7 +1,7 @@
 "use client"
 import Link from "next/link";
-import { useState, useEffect } from "react";
-import { FaClipboardList, FaHome, FaUser } from "react-icons/fa";
+import { useEffect, useState } from "react";
+import { FaHome, FaUser } from "react-icons/fa";
 import { FaCartShopping } from "react-icons/fa6";
 
 export default function Menu() {

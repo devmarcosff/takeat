@@ -2,7 +2,6 @@
 import Image from "next/image";
 import { useEffect, useState } from "react";
 import { TiLocation } from "react-icons/ti";
-import Logo from '../../../assets/logo_takeat.png'
 import { FaStreetView, FaUser } from "react-icons/fa";
 import { FaMapLocation } from "react-icons/fa6";
 import LoadingHeader from "../loading/loading.header.component";
@@ -15,6 +14,7 @@ interface ClientProps {
 }
 
 export default function Header({ username, phone }: ClientProps) {
+  const Logo = '/assets/logo_takeat.png'
   const [location, setLocation] = useState<{
     latitude: number | null;
     longitude: number | null;

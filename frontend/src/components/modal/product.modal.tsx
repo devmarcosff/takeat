@@ -1,13 +1,14 @@
 "use client"
-import React, { useEffect, useState } from "react";
+import React, { Dispatch, SetStateAction, useEffect, useState } from "react";
 import { FiPlus } from "react-icons/fi";
 import { RiSubtractLine } from "react-icons/ri";
 import { Dialog, DialogBackdrop, DialogPanel, DialogTitle } from '@headlessui/react'
 import { IProducts } from "@/types/Types";
+import Image from "next/image";
 
 interface ModalProps {
   open: boolean,
-  setOpen: any,
+  setOpen: Dispatch<SetStateAction<boolean>>,
   snack: IProducts
 }
 
@@ -36,21 +37,21 @@ export default function ProductModal({ open, setOpen, snack }: ModalProps) {
 
   const addProductToLocalStorage = (product: IProducts): void => {
     if (typeof window === "undefined") return;
-  
+
     const existingProducts = JSON.parse(localStorage.getItem("products") || "[]");
-  
+
     const productIndex = existingProducts.findIndex(
       (existingProduct: IProducts) => existingProduct.id === product.id
     );
-  
+
     if (productIndex > -1) {
       existingProducts[productIndex].quantities += product.quantities;
     } else {
       existingProducts.push(product);
     }
-  
+
     localStorage.setItem("products", JSON.stringify(existingProducts));
-  
+
     window.dispatchEvent(new Event("productsUpdated"));
   };
 
@@ -68,7 +69,9 @@ export default function ProductModal({ open, setOpen, snack }: ModalProps) {
           >
             <div className="bg-white px-4 pb-4 pt-5 sm:p-6 sm:pb-4">
               <div>
-                <img
+                <Image
+                  width={500}
+                  height={250}
                   src={img}
                   alt="img"
                   className="h-[250] w-full rounded-lg shadow-lg"

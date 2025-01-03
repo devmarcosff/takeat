@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { NotFoundCartProps } from "./not-Found.types"
+import { NotFoundCartProps } from "./not-found.types"
 import { MdOutlineProductionQuantityLimits } from "react-icons/md";
 
 export default function NotFoundCart({ isNotFound, children }: NotFoundCartProps) {

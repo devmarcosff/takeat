@@ -1,14 +1,13 @@
 "use client"
 import HeaderRestaurant from "@/components/headers/header.restaurant.component";
-import Loading from "@/components/loading/loading.restaurants.component";
 import LoadingHeader from "@/components/loading/loading.header.component";
+import Loading from "@/components/loading/loading.restaurants.component";
+import ProductModal from "@/components/modal/product.modal";
 import { IProducts } from "@/types/Types";
 import axios from "axios";
+import Image from "next/image";
 import React, { useEffect, useState } from "react";
 import { IoRestaurant } from "react-icons/io5";
-import Image from "next/image";
-import Logo from '../../../assets/logo_takeat.png'
-import ProductModal from "@/components/modal/product.modal";
 
 interface Props {
   params: Promise<{ phone: string }>;
@@ -33,6 +32,7 @@ export interface ISingleRestaurants {
 }
 
 export default function RestaurantePage({ params }: Props) {
+  const Logo = '/assets/logo_takeat.png'
   const [restaurant, setRestaurant] = useState<ISingleRestaurants | null>(null);
   const [loading, setLoading] = useState(true);
   const [open, setOpen] = useState(false)
@@ -79,9 +79,9 @@ export default function RestaurantePage({ params }: Props) {
       </div>
 
       <section className="mx-2 p-3 bg-white rounded-md shadow-sm border border-takeat-gray-500">
-        <div className="flex items-center justify-between">
-          <h2 className="font-medium">Refeições</h2>
+        <div className="flex items-center gap-2">
           <IoRestaurant className="size-5 text-takeat-error-400" />
+          <h2 className="font-medium">Refeições</h2>
         </div>
 
         {restaurant.products?.map((item) => (

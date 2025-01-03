@@ -1,5 +1,5 @@
 import { IRestaurants } from "@/types/Types"
 
-export type RestaurantCartProps = {
+export type RestaurantLoginProps = {
     restaurant: IRestaurants['restaurant']
 }
